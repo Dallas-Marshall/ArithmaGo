@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:background="@color/gold_metallic"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp">
+
+    <TextView
+        android:id="@+id/positionNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="5dp"
+        android:paddingEnd="10dp"
+        android:text="@string/first"
+        android:textColor="@color/davys_grey"
+        android:textSize="26sp" />
+
+    <ImageView
+        android:id="@+id/avatar"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:contentDescription="@string/avatar"
+        android:src="@drawable/avatar_01" />
+
+    <TextView
+        android:id="@+id/usernameDisplay"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:text="@string/dallas_marshall"
+        android:textColor="@color/davys_grey"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/highScoreDisplay"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:layout_weight="1"
+        android:text="@string/_10_526"
+        android:textAlignment="textEnd"
+        android:textColor="@color/davys_grey"
+        android:textSize="28sp" />
+</TableRow>
