@@ -36,7 +36,14 @@ public class LeaderboardActivity extends AppCompatActivity {
         populateLeaderboard();
     }
 
+    /**
+     * Adds top 10 high scores to leaderboardRows.
+     */
     private void populateLeaderboard() {
+        // TODO: Calculate top 10
+        // TODO: Fetch winner username from db
+        // TODO: Fetch winner highScore from db
+        addLeaderboardWinner("mobpuncher1", 10237);
         for (int position = 2; position < 11; position++) {
             // TODO: Fetch username from db
             // TODO: Fetch highScore from db
@@ -44,7 +51,42 @@ public class LeaderboardActivity extends AppCompatActivity {
         }
     }
 
-    public void addLeaderboardRow(int position, String username, int highScore) {
+    /**
+     * Add formatted leaderboard_slot_winner view element to leaderboardRows.
+     *
+     * @param username  String - Username of winner
+     * @param highScore int - High score of winner
+     */
+    private void addLeaderboardWinner(String username, int highScore) {
+        // Inflate leaderboard_slot_winner into leaderboardRows
+        ViewGroup leaderboardRows = findViewById(R.id.leaderboardRows);
+        getLayoutInflater().inflate(R.layout.leaderboard_slot_winner, leaderboardRows);
+
+        // Get View element just added to leaderboardRows
+        View lastRow = leaderboardRows.getChildAt(leaderboardRows.getChildCount() - 1);
+
+        // Set Username
+        TextView usernameDisplay = lastRow.findViewById(R.id.usernameDisplay);
+        usernameDisplay.setText(username);
+
+        // Set HighScore
+        TextView highScoreDisplay = lastRow.findViewById(R.id.highScoreDisplay);
+        highScoreDisplay.setText(formatHighScore(highScore));
+
+        // Set random Image
+        int randIndex = random.nextInt(avatars.length);
+        ImageView avatar = lastRow.findViewById(R.id.avatar);
+        avatar.setImageDrawable(getResources().getDrawableForDensity(avatars[randIndex], 0));
+    }
+
+    /**
+     * Add formatted leaderboard_slot view element to leaderboardRows.
+     *
+     * @param position  int - Position in top 10
+     * @param username  String - Username of player
+     * @param highScore int - High score of player
+     */
+    private void addLeaderboardRow(int position, String username, int highScore) {
         // Inflate leaderboard_slot into leaderboardRows
         ViewGroup leaderboardRows = findViewById(R.id.leaderboardRows);
         getLayoutInflater().inflate(R.layout.leaderboard_slot, leaderboardRows);
@@ -63,8 +105,7 @@ public class LeaderboardActivity extends AppCompatActivity {
 
         // Set HighScore
         TextView highScoreDisplay = lastRow.findViewById(R.id.highScoreDisplay);
-        String score = String.format(locale, "%d", highScore);
-        highScoreDisplay.setText(score);
+        highScoreDisplay.setText(formatHighScore(highScore));
 
         // Set random Image
         int randIndex = random.nextInt(avatars.length);
@@ -83,6 +124,25 @@ public class LeaderboardActivity extends AppCompatActivity {
             int copper_crayola = Color.rgb(221, 144, 114);
             lastRow.setBackgroundColor(copper_crayola);
         }
+    }
+
+    /**
+     * Convert int score into String with a comma after every 3 digits.
+     *
+     * @param score int - High score to be formatted
+     * @return String - Formatted with a comma after every 3 digits
+     */
+    private String formatHighScore(int score) {
+        StringBuilder formattedHighScore = new StringBuilder();
+        String highScore = String.format(locale, "%d", score);
+        int numLength = highScore.length();
+        for (int i = 0; i < numLength; i++) {
+            if ((numLength - i) % 3 == 0 && i != 0) {
+                formattedHighScore.append(",");
+            }
+            formattedHighScore.append(highScore.charAt(i));
+        }
+        return formattedHighScore.toString();
     }
 }
 
