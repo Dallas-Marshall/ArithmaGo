@@ -2,14 +2,18 @@ package au.edu.jcu.cp3406.arithmago;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Random;
 
 public class LeaderboardActivity extends AppCompatActivity {
@@ -32,19 +36,38 @@ public class LeaderboardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_leaderboard);
         locale = Locale.getDefault();
         random = new Random();
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         populateLeaderboard();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            case (R.id.shareIcon):
+                // TODO: Implement social media sharing
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.share_menu, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     /**
      * Adds top 10 high scores to leaderboardRows.
      */
     private void populateLeaderboard() {
-        // TODO: Calculate top 10
+        // TODO: Sort db
         // TODO: Fetch winner username from db
         // TODO: Fetch winner highScore from db
         addLeaderboardWinner("mobpuncher1", 10237);
-        for (int position = 2; position < 11; position++) {
+        for (int position = 2; position < 11; position++) { // TODO: Iterate through every record in cursor
             // TODO: Fetch username from db
             // TODO: Fetch highScore from db
             addLeaderboardRow(position, "mobpuncher1", (10000 - (position * 361)));
