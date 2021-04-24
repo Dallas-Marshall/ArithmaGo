@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:background="@color/navy"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp">
+
+    <TextView
+        android:id="@+id/positionNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="5dp"
+        android:paddingEnd="10dp"
+        android:text="@string/_2"
+        android:textColor="@color/white"
+        android:textSize="24sp" />
+
+    <ImageView
+        android:id="@+id/profilePicture"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:contentDescription="@string/profilePicture"
+        android:src="@drawable/profile_picture_01" />
+
+    <TextView
+        android:id="@+id/usernameDisplay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:text="@string/dallas_marshall"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/highScoreDisplay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:text="@string/_10_526"
+        android:textAlignment="textEnd"
+        android:textColor="@color/white"
+        android:textSize="24sp" />
+</TableRow>
