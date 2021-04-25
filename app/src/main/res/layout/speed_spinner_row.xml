@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:orientation="horizontal"
+    android:layout_centerVertical="true"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="10dp"
+    android:layout_marginStart="5dp">
+
+    <ImageView
+        android:layout_gravity="start"
+        android:id="@+id/speedSpinnerRowIcon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/stopwatch"
+        android:contentDescription="@string/speed" />
+
+    <TextView
+        android:id="@+id/speedSpinnerRowName"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="@string/normal"
+        android:textAlignment="textStart"
+        android:textColor="@color/prussian_blue"
+        android:textSize="18sp" />
+</androidx.appcompat.widget.LinearLayoutCompat>
