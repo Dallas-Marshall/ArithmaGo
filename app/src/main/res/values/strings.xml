@@ -11,4 +11,21 @@
     <string name="avatar">avatar</string>
     <string name="first">1st</string>
     <string name="share">Share</string>
+    <string name="subtraction">Subtraction</string>
+    <string name="addition">Addition</string>
+    <string name="division">Division</string>
+    <string name="multiplication">Multiplication</string>
+    <string name="operators">Operators</string>
+    <string name="speed">Speed</string>
+    <string name="default_username">Default Username</string>
+    <string name="username">username</string>
+    <string name="save">Save</string>
+    <string name="normal">Normal</string>
+    <string-array name="speeds">
+        <item>Slow</item>
+        <item>Normal</item>
+        <item>Fast</item>
+        <item>Lightning</item>
+        <item>God Speed</item>
+    </string-array>
 </resources>
