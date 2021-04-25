@@ -10,9 +10,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ArithmaGo">
         <activity
+            android:name=".SettingsActivity"
+            android:label="Settings"
+            android:parentActivityName=".HomeActivity" />
+        <activity
             android:name=".LeaderboardActivity"
             android:label="Leaderboard"
-            android:parentActivityName=".HomeActivity"></activity>
+            android:launchMode="singleInstance"
+            android:parentActivityName=".HomeActivity" />
         <activity android:name=".HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
