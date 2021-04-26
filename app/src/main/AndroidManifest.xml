@@ -10,6 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ArithmaGo">
         <activity
+            android:name=".GameActivity"
+            android:label="Let's Play"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".SettingsActivity"
             android:label="Settings"
             android:parentActivityName=".HomeActivity" />
