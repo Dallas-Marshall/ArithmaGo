@@ -7,17 +7,13 @@ import android.os.Handler;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import au.edu.jcu.cp3406.arithmago.Cloud;
-import au.edu.jcu.cp3406.arithmago.R;
-import au.edu.jcu.cp3406.arithmago.SkyView;
-import au.edu.jcu.cp3406.arithmago.Utilities;
 
 public class GameActivity extends AppCompatActivity {
     private Handler mainHandler;
@@ -26,6 +22,7 @@ public class GameActivity extends AppCompatActivity {
     private Button add, remove;
     private SkyView skyView;
     private List<Cloud> clouds;
+    private List<Plane> planes;
 //    private AudioManager audioManager;
 
     @Override
@@ -35,18 +32,20 @@ public class GameActivity extends AppCompatActivity {
 
 //        audioManager = new AudioManager(this);
         clouds = new ArrayList<>();
+        planes = new ArrayList<>();
 
         // setup redrawing
         mainHandler = new Handler();
         skyView = findViewById(R.id.skyView);
         skyView.setClouds(clouds);
+        skyView.setPlanes(planes);
         redraw = new Runnable() {
             @Override
             public void run() {
                 if (isRedrawing) {
-                    moveDucks();
+                    moveClouds();
                     skyView.invalidate();
-                    mainHandler.postDelayed(redraw, 24);
+                    mainHandler.postDelayed(redraw, 1);
                 }
             }
         };
@@ -59,7 +58,6 @@ public class GameActivity extends AppCompatActivity {
         isRedrawing = true;
         mainHandler.post(redraw);
 //        audioManager.resume();
-        setClouds();
     }
 
     @Override
@@ -69,16 +67,17 @@ public class GameActivity extends AppCompatActivity {
 //        audioManager.pause();
     }
 
-    public void setClouds() {
+    public void setClouds(View view) {
         Random random = new Random();
 
                 int width = skyView.getWidth();
                 int height = skyView.getHeight();
-                float scale = 0.25f + random.nextFloat() * (1 - 0.25f);
-                clouds.add(new Cloud(createBitmap(scale), width, height));
+                float scale = (float) 0.1;
+                clouds.add(new Cloud(createCloudBitmap(scale), width, height));
+                planes.add(new Plane(createPlaneBitmap(scale), width, height));
     }
 
-    private void moveDucks() {
+    private void moveClouds() {
         for (Cloud cloud : clouds) {
             boolean bounced = cloud.move();
             if (bounced) {
@@ -90,9 +89,16 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-    private Bitmap createBitmap(float scale) {
+    private Bitmap createCloudBitmap(float scale) {
         Point size = Utilities.computeSizeInDP(getWindowManager(), 0.5f);
-        Bitmap bitmap = Utilities.decodeBitmap(getResources(), R.drawable.cloud, size);
+        Bitmap bitmap = Utilities.decodeBitmap(getResources(), R.drawable.cloud_filled, size);
+        int width = Math.round(bitmap.getWidth() * scale);
+        int height = Math.round(bitmap.getHeight() * scale);
+        return Bitmap.createScaledBitmap(bitmap, width, height, true);
+    }
+    private Bitmap createPlaneBitmap(float scale) {
+        Point size = Utilities.computeSizeInDP(getWindowManager(), 0.5f);
+        Bitmap bitmap = Utilities.decodeBitmap(getResources(), R.drawable.airplane, size);
         int width = Math.round(bitmap.getWidth() * scale);
         int height = Math.round(bitmap.getHeight() * scale);
         return Bitmap.createScaledBitmap(bitmap, width, height, true);

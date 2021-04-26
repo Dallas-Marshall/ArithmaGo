@@ -1,11 +1,14 @@
 package au.edu.jcu.cp3406.arithmago;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -17,6 +20,7 @@ public class SkyView extends View {
     private int width;
     private int height;
     private List<Cloud> clouds;
+    private List<Plane> planes;
 
     public SkyView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -38,15 +42,9 @@ public class SkyView extends View {
         drawSkyTones(canvas);
 
         drawClouds(canvas);
-    }
 
-//    public int getSkyWidth() {
-//        return 50;
-//    }
-//
-//    public int getSkyheight() {
-//        return 50;
-//    }
+        drawPlane(canvas);
+    }
 
     private void drawSkyTones(Canvas canvas) {
         int h = height / 6;
@@ -74,7 +72,19 @@ public class SkyView extends View {
         }
     }
 
+    private void drawPlane(Canvas canvas) {
+        assert planes != null;
+
+        for (Plane plane : planes) {
+            plane.draw(canvas);
+        }
+    }
+
     public void setClouds(List<Cloud> clouds) {
         this.clouds = clouds;
+    }
+
+    public void setPlanes(List<Plane> planes) {
+        this.planes = planes;
     }
 }
