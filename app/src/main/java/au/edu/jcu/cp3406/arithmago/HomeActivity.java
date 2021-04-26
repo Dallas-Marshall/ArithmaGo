@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class HomeActivity extends AppCompatActivity {
     // Intent Variables
     public static final int SETTINGS_REQUEST = 1;
+    public static final int GAME_REQUEST = 2;
 
     // App Variables
     private String speed;
@@ -60,6 +61,17 @@ public class HomeActivity extends AppCompatActivity {
         intent.putExtra("isSubtractionEnabled", isSubtractionEnabled);
         intent.putExtra("username", username);
         startActivityForResult(intent, SETTINGS_REQUEST);
+    }
+
+    public void playSelected(View view) {
+        // Start gameActivity
+        Intent intent = new Intent(this, GameActivity.class);
+        intent.putExtra("speed", speed);
+        intent.putExtra("isMultiplicationEnabled", isMultiplicationEnabled);
+        intent.putExtra("isDivisionEnabled", isDivisionEnabled);
+        intent.putExtra("isAdditionEnabled", isAdditionEnabled);
+        intent.putExtra("isSubtractionEnabled", isSubtractionEnabled);
+        startActivityForResult(intent, GAME_REQUEST);
     }
 
     @Override

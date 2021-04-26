@@ -8,12 +8,12 @@
     tools:context=".HomeActivity">
 
     <ImageView
-        android:layout_marginTop="25dp"
         android:id="@+id/logo"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:layout_weight="2"
+        android:layout_marginTop="25dp"
         android:layout_marginBottom="5dp"
+        android:layout_weight="2"
         android:contentDescription="@string/logo"
         android:src="@drawable/logo" />
 
@@ -21,13 +21,14 @@
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:layout_weight="1"
-        android:orientation="vertical"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="vertical">
 
         <Button
             android:id="@+id/playButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="playSelected"
             android:text="@string/play"
             android:textSize="18sp" />
 
@@ -35,17 +36,17 @@
             android:id="@+id/leaderboardButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/leaderboard"
             android:onClick="leaderboardSelected"
+            android:text="@string/leaderboard"
             android:textSize="18sp" />
 
         <Button
             android:id="@+id/settingsButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="settingsSelected"
             android:text="@string/settings"
-            android:textSize="18sp"
-            android:onClick="settingsSelected"/>
+            android:textSize="18sp" />
 
         <Button
             android:id="@+id/rulesButton"
