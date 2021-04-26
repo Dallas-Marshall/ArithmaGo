@@ -1,6 +1,8 @@
 package au.edu.jcu.cp3406.arithmago;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 
@@ -13,34 +15,35 @@ public class HomeActivity extends AppCompatActivity {
     public static final int GAME_REQUEST = 2;
 
     // App Variables
-    private String speed;
-    private boolean isMultiplicationEnabled;
-    private boolean isDivisionEnabled;
-    private boolean isAdditionEnabled;
-    private boolean isSubtractionEnabled;
-    private String username;
+    private SharedPreferences dataSource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        dataSource = getSharedPreferences("ArithmaGo_Variables", Context.MODE_PRIVATE);
 
-        if (savedInstanceState == null) {
+        if (dataSource.getString("speed", "Not Initialised").equals("Not Initialised")) { // No saved dataSource
             // Set defaults
-            speed = "Normal";
-            isMultiplicationEnabled = true;
-            isDivisionEnabled = true;
-            isAdditionEnabled = true;
-            isSubtractionEnabled = true;
-            username = "Guest";
-        } else {
+            SharedPreferences.Editor editor = dataSource.edit();
+            editor.putString("speed", "Normal");
+            editor.putBoolean("isMultiplicationEnabled", true);
+            editor.putBoolean("isDivisionEnabled", true);
+            editor.putBoolean("isAdditionEnabled", true);
+            editor.putBoolean("isSubtractionEnabled", true);
+            editor.putString("username", "Guest");
+            editor.apply(); // Save changes
+        }
+        if (savedInstanceState != null) { // Previously saved state
             // Load saved variables
-            speed = savedInstanceState.getString("speed");
-            isMultiplicationEnabled = savedInstanceState.getBoolean("isMultiplicationEnabled");
-            isDivisionEnabled = savedInstanceState.getBoolean("isDivisionEnabled");
-            isAdditionEnabled = savedInstanceState.getBoolean("isAdditionEnabled");
-            isSubtractionEnabled = savedInstanceState.getBoolean("isSubtractionEnabled");
-            username = savedInstanceState.getString("username");
+            SharedPreferences.Editor editor = dataSource.edit();
+            editor.putString("speed", savedInstanceState.getString("speed"));
+            editor.putBoolean("isMultiplicationEnabled", savedInstanceState.getBoolean("isMultiplicationEnabled"));
+            editor.putBoolean("isDivisionEnabled", savedInstanceState.getBoolean("isDivisionEnabled"));
+            editor.putBoolean("isAdditionEnabled", savedInstanceState.getBoolean("isAdditionEnabled"));
+            editor.putBoolean("isSubtractionEnabled", savedInstanceState.getBoolean("isSubtractionEnabled"));
+            editor.putString("username", savedInstanceState.getString("username"));
+            editor.apply(); // Save changes
         }
     }
 
@@ -52,53 +55,24 @@ public class HomeActivity extends AppCompatActivity {
 
     public void settingsSelected(View view) {
         // Start SettingsActivity
-//        Log.i("Dallas", "settingsSelected: " + speed + " " + isMultiplicationEnabled + " " + isDivisionEnabled + " " + isAdditionEnabled + " " + isSubtractionEnabled + " " + username);
         Intent intent = new Intent(this, SettingsActivity.class);
-        intent.putExtra("speed", speed);
-        intent.putExtra("isMultiplicationEnabled", isMultiplicationEnabled);
-        intent.putExtra("isDivisionEnabled", isDivisionEnabled);
-        intent.putExtra("isAdditionEnabled", isAdditionEnabled);
-        intent.putExtra("isSubtractionEnabled", isSubtractionEnabled);
-        intent.putExtra("username", username);
-        startActivityForResult(intent, SETTINGS_REQUEST);
+        startActivity(intent);
     }
 
     public void playSelected(View view) {
         // Start gameActivity
         Intent intent = new Intent(this, GameActivity.class);
-        intent.putExtra("speed", speed);
-        intent.putExtra("isMultiplicationEnabled", isMultiplicationEnabled);
-        intent.putExtra("isDivisionEnabled", isDivisionEnabled);
-        intent.putExtra("isAdditionEnabled", isAdditionEnabled);
-        intent.putExtra("isSubtractionEnabled", isSubtractionEnabled);
         startActivityForResult(intent, GAME_REQUEST);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == SETTINGS_REQUEST) {
-            if (resultCode == RESULT_OK) {
-                // Get String data from Intent
-                speed = data.getStringExtra("speed");
-                isMultiplicationEnabled = data.getBooleanExtra("isMultiplicationEnabled", true);
-                isDivisionEnabled = data.getBooleanExtra("isDivisionEnabled", true);
-                isAdditionEnabled = data.getBooleanExtra("isAdditionEnabled", true);
-                isSubtractionEnabled = data.getBooleanExtra("isSubtractionEnabled", true);
-                username = data.getStringExtra("username");
-//                Log.i("Dallas", "onActivityResult: " + speed + " " + isMultiplicationEnabled + " " + isDivisionEnabled + " " + isAdditionEnabled + " " + isSubtractionEnabled + " " + username);
-            }
-        }
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("speed", speed);
-        outState.putBoolean("isMultiplicationEnabled", isMultiplicationEnabled);
-        outState.putBoolean("isDivisionEnabled", isDivisionEnabled);
-        outState.putBoolean("isAdditionEnabled", isAdditionEnabled);
-        outState.putBoolean("isSubtractionEnabled", isSubtractionEnabled);
-        outState.putString("username", username);
+        outState.putString("speed", dataSource.getString("speed", "Normal"));
+        outState.putBoolean("isMultiplicationEnabled", dataSource.getBoolean("isMultiplicationEnabled", true));
+        outState.putBoolean("isDivisionEnabled", dataSource.getBoolean("isDivisionEnabled", true));
+        outState.putBoolean("isAdditionEnabled", dataSource.getBoolean("isAdditionEnabled", true));
+        outState.putBoolean("isSubtractionEnabled", dataSource.getBoolean("isSubtractionEnabled", true));
+        outState.putString("username", dataSource.getString("username", "Guest"));
     }
 }
