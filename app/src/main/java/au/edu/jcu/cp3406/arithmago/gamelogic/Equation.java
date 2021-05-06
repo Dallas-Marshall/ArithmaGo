@@ -69,6 +69,41 @@ public class Equation {
         return (int) Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
+    public boolean checkAnswer(String operator, String equation, int answer) {
+        String regex;
+        switch (operator.toLowerCase()) {
+            case "division":
+                regex = "÷";
+                break;
+            case "addition":
+                regex = "\\+";
+                break;
+            case "subtraction":
+                regex = "-";
+                break;
+            default:
+                regex = "x";
+                break;
+        }
+        String[] factors = equation.split(regex);
+        int total;
+        switch (regex) {
+            case "÷":
+                total = Integer.parseInt(factors[0].trim()) / Integer.parseInt(factors[1].trim());
+                break;
+            case "\\+":
+                total = Integer.parseInt(factors[0].trim()) + Integer.parseInt(factors[1].trim());
+                break;
+            case "-":
+                total = Integer.parseInt(factors[0].trim()) - Integer.parseInt(factors[1].trim());
+                break;
+            default:
+                total = Integer.parseInt(factors[0].trim()) * Integer.parseInt(factors[1].trim());
+                break;
+        }
+        return answer == total;
+    }
+
     public static class InvalidOperatorException extends Exception {
         InvalidOperatorException(String message) {
             super(message);

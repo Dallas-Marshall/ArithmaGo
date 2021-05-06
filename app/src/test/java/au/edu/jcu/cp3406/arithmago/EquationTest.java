@@ -104,6 +104,22 @@ public class EquationTest {
     }
 
     @Test
+    public void testCheckAnswer() {
+        Equation equationA = new Equation("EASY");
+        String eqnM = "5 x 4";
+        assert equationA.checkAnswer("multiplication", eqnM, 20);
+
+        String eqnA = "5 + 2";
+        assert equationA.checkAnswer("addition", eqnA, 7);
+
+        String eqnD = "20 ÷ 4";
+        assert equationA.checkAnswer("DIVISION", eqnD, 5);
+
+        String eqnS = "5 - 2";
+        assert equationA.checkAnswer("SUBTRACTION", eqnS, 3);
+    }
+
+    @Test
     public void InvalidOperatorException() {
         try {
             Equation equation = new Equation();
