@@ -1,7 +1,8 @@
 package au.edu.jcu.cp3406.arithmago;
 
-import org.junit.Assert;
 import org.junit.Test;
+
+import au.edu.jcu.cp3406.arithmago.gamelogic.CountdownTimer;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
@@ -51,7 +52,7 @@ public class CountdownTest {
         try {
             CountdownTimer timer = new CountdownTimer(-1);
         } catch (CountdownTimer.InvalidTimeException e) {
-            assertEquals("Invalid time -1 - must be between 0 - 120", e.getMessage());
+            assertEquals("Invalid time '-1' - must be between 0 - 120", e.getMessage());
         }
     }
 
