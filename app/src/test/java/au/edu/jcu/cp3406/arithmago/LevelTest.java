@@ -2,6 +2,8 @@ package au.edu.jcu.cp3406.arithmago;
 
 import org.junit.Test;
 
+import au.edu.jcu.cp3406.arithmago.gamelogic.Level;
+
 import static org.junit.Assert.assertEquals;
 
 public class LevelTest {
@@ -93,5 +95,14 @@ public class LevelTest {
         assertEquals("MEDIUM", levelDL.getLevel());
         assertEquals(1, levelDL.getMin());
         assertEquals(9, levelDL.getMax());
+    }
+
+    @Test
+    public void testEmptyConstructor() {
+        Level levelDU = new Level();
+
+        assertEquals("MEDIUM", levelDU.getLevel());
+        assertEquals(1, levelDU.getMin());
+        assertEquals(9, levelDU.getMax());
     }
 }

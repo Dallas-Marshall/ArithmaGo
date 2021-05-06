@@ -1,11 +1,17 @@
-package au.edu.jcu.cp3406.arithmago;
+package au.edu.jcu.cp3406.arithmago.gamelogic;
 
 public class Level {
     private int min;
     private int max;
     private String level;
 
-    Level(String level) {
+    public Level() {
+        this.min = 1;
+        this.max = 9;
+        this.level = "MEDIUM";
+    }
+
+    public Level(String level) {
         switch (level.toUpperCase()) {
             case "EASY":
                 this.min = 0;
