@@ -1,5 +1,6 @@
 package au.edu.jcu.cp3406.arithmago.gamelogic;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 
@@ -21,28 +22,37 @@ public class Equation {
         max = levelSelected.getMax();
     }
 
-    public String generateMultiplication() {
-        int multiplier = generateRandomIntInRange(min, max); // First Number
-        int multiplicand = generateRandomIntInRange(min, max); // Second Number
-        return String.format(locale, "%d x %d", multiplier, multiplicand);
-    }
+    public String generate(String operator) throws InvalidOperatorException {
+        ArrayList<String> OPERATORS = new ArrayList<>();
+        OPERATORS.add("multiplication");
+        OPERATORS.add("division");
+        OPERATORS.add("addition");
+        OPERATORS.add("subtraction");
 
-    public String generateDivision() {
-        int multiplier = generateRandomIntInRange(min, max); // First Number
-        int multiplicand = generateRandomIntInRange(min, max); // Second Number
-        return String.format(locale, "%d ÷ %d", multiplier, multiplicand);
-    }
+        try {
+            int index = OPERATORS.indexOf(operator.toLowerCase());
+            String operatorSymbol;
+            switch (index) {
+                case 0:
+                    operatorSymbol = "x";
+                    break;
+                case 1:
+                    operatorSymbol = "÷";
+                    break;
+                case 2:
+                    operatorSymbol = "+";
+                    break;
+                default:
+                    operatorSymbol = "-";
+                    break;
+            }
 
-    public String generateAddition() {
-        int multiplier = generateRandomIntInRange(min, max); // First Number
-        int multiplicand = generateRandomIntInRange(min, max); // Second Number
-        return String.format(locale, "%d + %d", multiplier, multiplicand);
-    }
-
-    public String generateSubtraction() {
-        int multiplier = generateRandomIntInRange(min, max); // First Number
-        int multiplicand = generateRandomIntInRange(min, max); // Second Number
-        return String.format(locale, "%d - %d", multiplier, multiplicand);
+            int multiplier = generateRandomIntInRange(min, max); // First Number
+            int multiplicand = generateRandomIntInRange(min, max); // Second Number
+            return String.format(locale, "%d %s %d", multiplier, operatorSymbol, multiplicand);
+        } catch (ClassCastException e) {
+            throw new InvalidOperatorException(String.format("'%s' is not a valid operator", operator));
+        }
     }
 
     public void changeLevel(String newLevel) {
@@ -57,5 +67,11 @@ public class Equation {
 
     private int generateRandomIntInRange(int min, int max) {
         return (int) Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    public static class InvalidOperatorException extends Exception {
+        InvalidOperatorException(String message) {
+            super(message);
+        }
     }
 }
