@@ -4,41 +4,49 @@ import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+
+import au.edu.jcu.cp3406.arithmago.skyview.Cloud;
+import au.edu.jcu.cp3406.arithmago.skyview.Plane;
+import au.edu.jcu.cp3406.arithmago.skyview.SkyView;
+import au.edu.jcu.cp3406.arithmago.skyview.Utilities;
 
 public class GameActivity extends AppCompatActivity {
     private Handler mainHandler;
     private Runnable redraw;
     private boolean isRedrawing;
-    private Button add, remove;
     private SkyView skyView;
     private List<Cloud> clouds;
     private List<Plane> planes;
-//    private AudioManager audioManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-//        audioManager = new AudioManager(this);
         clouds = new ArrayList<>();
         planes = new ArrayList<>();
 
+        skyView = findViewById(R.id.skyView);
+        displayShields();
+
+        // Draw skyView elements once view dimensions are set
+        skyView.post(new Runnable() {
+            @Override
+            public void run() {
+                int width = skyView.getWidth();
+                int height = skyView.getHeight();
+                drawElements(skyView);
+            }
+        });
         // setup redrawing
         mainHandler = new Handler();
-        skyView = findViewById(R.id.skyView);
-        skyView.setClouds(clouds);
-        skyView.setPlanes(planes);
         redraw = new Runnable() {
             @Override
             public void run() {
@@ -52,53 +60,45 @@ public class GameActivity extends AppCompatActivity {
 
     }
 
+    private void displayShields() {
+        // Inflate leaderboard_slot_winner into leaderboardRows
+        ViewGroup leaderboardRows = findViewById(R.id.shieldsDisplay);
+        getLayoutInflater().inflate(R.layout.shield_display, leaderboardRows);
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
         isRedrawing = true;
         mainHandler.post(redraw);
-//        audioManager.resume();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         isRedrawing = false;
-//        audioManager.pause();
     }
 
-    public void setClouds(View view) {
-        Random random = new Random();
-
-                int width = skyView.getWidth();
-                int height = skyView.getHeight();
-                float scale = (float) 0.1;
-                clouds.add(new Cloud(createCloudBitmap(scale), width, height));
-                planes.add(new Plane(createPlaneBitmap(scale), width, height));
+    public void drawElements(View view) {
+        int boundingWidth = skyView.getWidth();
+        int boundingHeight = skyView.getHeight();
+        float scale = 0.1f;
+        for (int i = 150; i <= 1500; i += 150) {
+            clouds.add(new Cloud(createBitmap(scale, R.drawable.cloud_filled), boundingWidth + i, boundingHeight));
+        }
+        skyView.setClouds(clouds);
+        skyView.setPlane(new Plane(createBitmap(scale, R.drawable.airplane), boundingWidth, boundingHeight));
     }
 
     private void moveClouds() {
         for (Cloud cloud : clouds) {
-            boolean bounced = cloud.move();
-            if (bounced) {
-                Random random = new Random();
-                float speed = 0.5f + random.nextFloat() * (2 - 0.5f); // range: [0.5,2)
-                float volume = 0.5f + random.nextFloat() * (1 - 0.5f); // [0.5, 1)
-//                audioManager.playSound(speed, volume);
-            }
+            cloud.move();
         }
     }
 
-    private Bitmap createCloudBitmap(float scale) {
+    private Bitmap createBitmap(float scale, int imageID) {
         Point size = Utilities.computeSizeInDP(getWindowManager(), 0.5f);
-        Bitmap bitmap = Utilities.decodeBitmap(getResources(), R.drawable.cloud_filled, size);
-        int width = Math.round(bitmap.getWidth() * scale);
-        int height = Math.round(bitmap.getHeight() * scale);
-        return Bitmap.createScaledBitmap(bitmap, width, height, true);
-    }
-    private Bitmap createPlaneBitmap(float scale) {
-        Point size = Utilities.computeSizeInDP(getWindowManager(), 0.5f);
-        Bitmap bitmap = Utilities.decodeBitmap(getResources(), R.drawable.airplane, size);
+        Bitmap bitmap = Utilities.decodeBitmap(getResources(), imageID, size);
         int width = Math.round(bitmap.getWidth() * scale);
         int height = Math.round(bitmap.getHeight() * scale);
         return Bitmap.createScaledBitmap(bitmap, width, height, true);
