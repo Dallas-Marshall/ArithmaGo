@@ -1,4 +1,4 @@
-package au.edu.jcu.cp3406.arithmago;
+package au.edu.jcu.cp3406.arithmago.skyview;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
