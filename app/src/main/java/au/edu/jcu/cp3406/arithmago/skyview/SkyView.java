@@ -1,36 +1,27 @@
-package au.edu.jcu.cp3406.arithmago;
+package au.edu.jcu.cp3406.arithmago.skyview;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PointF;
-import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
 import android.util.AttributeSet;
 import android.view.View;
 
 import java.util.List;
-import java.util.Random;
 
 public class SkyView extends View {
-    private Paint skyPaint;
     private int width;
     private int height;
     private List<Cloud> clouds;
-    private List<Plane> planes;
+    private Plane plane;
 
     public SkyView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
     @Override
-    protected void onSizeChanged(int newWidth, int newHeight,
-                                 int oldWidth, int oldHeight) {
+    protected void onSizeChanged(int newWidth, int newHeight, int oldWidth, int oldHeight) {
         super.onSizeChanged(newWidth, newHeight, oldWidth, oldHeight);
-
         width = newWidth;
         height = newHeight;
     }
@@ -48,7 +39,7 @@ public class SkyView extends View {
 
     private void drawSkyTones(Canvas canvas) {
         int h = height / 6;
-        skyPaint = new Paint();
+        Paint skyPaint = new Paint();
         int[] colors = {
                 Color.rgb(171, 196, 255),
                 Color.rgb(182, 204, 254),
@@ -65,17 +56,15 @@ public class SkyView extends View {
 
 
     private void drawClouds(Canvas canvas) {
-        assert clouds != null;
-
-        for (Cloud cloud : clouds) {
-            cloud.draw(canvas);
+        if (clouds != null) {
+            for (Cloud cloud : clouds) {
+                cloud.draw(canvas);
+            }
         }
     }
 
     private void drawPlane(Canvas canvas) {
-        assert planes != null;
-
-        for (Plane plane : planes) {
+        if (plane != null) {
             plane.draw(canvas);
         }
     }
@@ -84,7 +73,7 @@ public class SkyView extends View {
         this.clouds = clouds;
     }
 
-    public void setPlanes(List<Plane> planes) {
-        this.planes = planes;
+    public void setPlane(Plane plane) {
+        this.plane = plane;
     }
 }
