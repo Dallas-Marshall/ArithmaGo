@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -41,6 +40,11 @@ public class LeaderboardActivity extends AppCompatActivity {
         populateLeaderboard();
     }
 
+    /**
+     * Handles options menu item being selected.
+     *
+     * @param item MenuItem - options menu item selected
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -54,9 +58,23 @@ public class LeaderboardActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Adds the share icon to the options menu.
+     *
+     * @param menu Menu - the options menu
+     */
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.share_menu, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    /**
+     * Stops the activity when the back button is pressed.
+     */
+    @Override
+    public void onBackPressed() {
+        finish();
+        super.onBackPressed();
     }
 
     /**
@@ -77,8 +95,8 @@ public class LeaderboardActivity extends AppCompatActivity {
     /**
      * Add formatted leaderboard_slot_winner view element to leaderboardRows.
      *
-     * @param username  String - Username of winner
-     * @param highScore int - High score of winner
+     * @param username  String - Username of winner.
+     * @param highScore int - High score of winner.
      */
     private void addLeaderboardWinner(String username, int highScore) {
         // Inflate leaderboard_slot_winner into leaderboardRows
@@ -105,9 +123,9 @@ public class LeaderboardActivity extends AppCompatActivity {
     /**
      * Add formatted leaderboard_slot view element to leaderboardRows.
      *
-     * @param position  int - Position in top 10
-     * @param username  String - Username of player
-     * @param highScore int - High score of player
+     * @param position  int - Position in top 10.
+     * @param username  String - Username of player.
+     * @param highScore int - High score of player.
      */
     private void addLeaderboardRow(int position, String username, int highScore) {
         // Inflate leaderboard_slot into leaderboardRows
