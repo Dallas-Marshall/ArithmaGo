@@ -23,10 +23,10 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         dataSource = getSharedPreferences("ArithmaGo_Variables", Context.MODE_PRIVATE);
 
-        if (dataSource.getString("speed", "Not Initialised").equals("Not Initialised")) { // No saved dataSource
+        if (dataSource.getString("level", "Not Initialised").equals("Not Initialised")) { // No saved dataSource
             // Set defaults
             SharedPreferences.Editor editor = dataSource.edit();
-            editor.putString("speed", "Normal");
+            editor.putString("level", "Dynamic");
             editor.putBoolean("isMultiplicationEnabled", true);
             editor.putBoolean("isDivisionEnabled", true);
             editor.putBoolean("isAdditionEnabled", true);
@@ -37,7 +37,7 @@ public class HomeActivity extends AppCompatActivity {
         if (savedInstanceState != null) { // Previously saved state
             // Load saved variables
             SharedPreferences.Editor editor = dataSource.edit();
-            editor.putString("speed", savedInstanceState.getString("speed"));
+            editor.putString("level", savedInstanceState.getString("level"));
             editor.putBoolean("isMultiplicationEnabled", savedInstanceState.getBoolean("isMultiplicationEnabled"));
             editor.putBoolean("isDivisionEnabled", savedInstanceState.getBoolean("isDivisionEnabled"));
             editor.putBoolean("isAdditionEnabled", savedInstanceState.getBoolean("isAdditionEnabled"));
@@ -68,7 +68,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("speed", dataSource.getString("speed", "Normal"));
+        outState.putString("level", dataSource.getString("level", "Medium"));
         outState.putBoolean("isMultiplicationEnabled", dataSource.getBoolean("isMultiplicationEnabled", true));
         outState.putBoolean("isDivisionEnabled", dataSource.getBoolean("isDivisionEnabled", true));
         outState.putBoolean("isAdditionEnabled", dataSource.getBoolean("isAdditionEnabled", true));

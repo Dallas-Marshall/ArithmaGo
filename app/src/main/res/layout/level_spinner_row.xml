@@ -11,14 +11,14 @@
 
     <ImageView
         android:layout_gravity="start"
-        android:id="@+id/speedSpinnerRowIcon"
+        android:id="@+id/levelSpinnerRowIcon"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:src="@drawable/stopwatch"
-        android:contentDescription="@string/speed" />
+        android:contentDescription="@string/level" />
 
     <TextView
-        android:id="@+id/speedSpinnerRowName"
+        android:id="@+id/levelSpinnerRowName"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"

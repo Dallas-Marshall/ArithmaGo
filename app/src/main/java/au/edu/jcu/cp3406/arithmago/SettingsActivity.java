@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,12 +20,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 
 public class SettingsActivity extends AppCompatActivity {
-    private ArrayList<SpeedItem> speedList;
-    private SpeedAdapter speedAdapter;
-    SpeedItem selectedSpeedItem;
+    private ArrayList<LevelItem> levelList;
+    private LevelAdapter levelAdapter;
+    private LevelItem selectedlevelItem;
 
     // View Elements
-    private Spinner speedSpinner;
+    private Spinner levelSpinner;
     private CheckBox multiplicationCheckBox;
     private CheckBox divisionCheckBox;
     private CheckBox additionCheckBox;
@@ -49,10 +48,10 @@ public class SettingsActivity extends AppCompatActivity {
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(false);
 
-        generateSpeedList();// Define speedSpinner custom layouts
-        setSelectedSpeedItem();// Set the selectedSpeedItem to match dataSource
+        generatelevelList();// Define levelSpinner custom layouts
+        setSelectedlevelItem();// Set the selectedlevelItem to match dataSource
         findActivityViews();
-        speedSpinner = setupSpeedSpinner();
+        levelSpinner = setuplevelSpinner();
         updateCurrentViewState(); // Set view elements to match dataSource
         usernameEntry.addTextChangedListener(textWatcher);
     }
@@ -63,39 +62,39 @@ public class SettingsActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    private void generateSpeedList() {
-        // Define speedSpinner custom layouts
-        speedList = new ArrayList<>();
-        speedList.add(new SpeedItem("Slow", R.drawable.tortise));
-        speedList.add(new SpeedItem("Normal", R.drawable.stopwatch));
-        speedList.add(new SpeedItem("Fast", R.drawable.rabbit));
-        speedList.add(new SpeedItem("Lightning", R.drawable.lightning_bolt));
-        speedList.add(new SpeedItem("God Speed", R.drawable.jesus));
+    private void generatelevelList() {
+        // Define levelSpinner custom layouts
+        levelList = new ArrayList<>();
+        levelList.add(new LevelItem("Dynamic", R.drawable.d));
+        levelList.add(new LevelItem("Easy", R.drawable.e));
+        levelList.add(new LevelItem("Medium", R.drawable.m));
+        levelList.add(new LevelItem("Hard", R.drawable.h));
+        levelList.add(new LevelItem("Expert", R.drawable.x));
     }
 
-    private void setSelectedSpeedItem() {
-        // Set the selectedSpeedItem to match dataSource
-        switch (dataSource.getString("speed", "Normal")) {
-            case "Slow":
-                selectedSpeedItem = speedList.get(0);
+    private void setSelectedlevelItem() {
+        // Set the selectedlevelItem to match dataSource
+        switch (dataSource.getString("level", "Normal")) {
+            case "Dynamic":
+                selectedlevelItem = levelList.get(0);
                 break;
-            case "Normal":
-                selectedSpeedItem = speedList.get(1);
+            case "Easy":
+                selectedlevelItem = levelList.get(1);
                 break;
-            case "Fast":
-                selectedSpeedItem = speedList.get(2);
+            case "Medium":
+                selectedlevelItem = levelList.get(2);
                 break;
-            case "Lightning":
-                selectedSpeedItem = speedList.get(3);
+            case "Hard":
+                selectedlevelItem = levelList.get(3);
                 break;
-            case "God Speed":
-                selectedSpeedItem = speedList.get(4);
+            case "Expert":
+                selectedlevelItem = levelList.get(4);
                 break;
         }
     }
 
     private void findActivityViews() {
-        speedSpinner = findViewById(R.id.speedSpinner);
+        levelSpinner = findViewById(R.id.levelSpinner);
         multiplicationCheckBox = findViewById(R.id.multiplicationCheckbox);
         divisionCheckBox = findViewById(R.id.divisionCheckbox);
         additionCheckBox = findViewById(R.id.additionCheckbox);
@@ -103,21 +102,21 @@ public class SettingsActivity extends AppCompatActivity {
         usernameEntry = findViewById(R.id.usernameEntry);
     }
 
-    private Spinner setupSpeedSpinner() {
-        speedSpinner = findViewById(R.id.speedSpinner);
+    private Spinner setuplevelSpinner() {
+        levelSpinner = findViewById(R.id.levelSpinner);
 
-        // Set SpeedAdapter to speedSpinner
-        speedAdapter = new SpeedAdapter(this, speedList);
-        speedSpinner.setAdapter(speedAdapter);
+        // Set levelAdapter to levelSpinner
+        levelAdapter = new LevelAdapter(this, levelList);
+        levelSpinner.setAdapter(levelAdapter);
 
         // Set item Selected Listener
-        speedSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        levelSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedSpeedItem = (SpeedItem) parent.getItemAtPosition(position);
-                // Update speed in dataSource
+                selectedlevelItem = (LevelItem) parent.getItemAtPosition(position);
+                // Update level in dataSource
                 SharedPreferences.Editor editor = dataSource.edit();
-                editor.putString("speed", selectedSpeedItem.getSpeedName());
+                editor.putString("level", selectedlevelItem.getLevelName());
                 editor.apply(); // Save changes
             }
 
@@ -125,7 +124,7 @@ public class SettingsActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-        return speedSpinner;
+        return levelSpinner;
     }
 
     private void updateCurrentViewState() {
@@ -135,7 +134,7 @@ public class SettingsActivity extends AppCompatActivity {
         additionCheckBox.setChecked(dataSource.getBoolean("isAdditionEnabled", true));
         subtractionCheckBox.setChecked(dataSource.getBoolean("isSubtractionEnabled", true));
         usernameEntry.setText(dataSource.getString("username", "Guest"));
-        speedSpinner.setSelection(speedAdapter.getPosition(selectedSpeedItem));
+        levelSpinner.setSelection(levelAdapter.getPosition(selectedlevelItem));
     }
 
     private final TextWatcher textWatcher = new TextWatcher() {

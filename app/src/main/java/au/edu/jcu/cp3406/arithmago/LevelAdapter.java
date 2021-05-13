@@ -14,12 +14,12 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 
 /**
- * Extension of ArrayAdapter to work with SpeedItem objects.
+ * Extension of ArrayAdapter to work with LevelItem objects.
  */
-public class SpeedAdapter extends ArrayAdapter<SpeedItem> {
+public class LevelAdapter extends ArrayAdapter<LevelItem> {
 
-    public SpeedAdapter(Context context, ArrayList<SpeedItem> speedList) {
-        super(context, 0, speedList);
+    public LevelAdapter(Context context, ArrayList<LevelItem> levelList) {
+        super(context, 0, levelList);
     }
 
     @NonNull
@@ -35,16 +35,16 @@ public class SpeedAdapter extends ArrayAdapter<SpeedItem> {
 
     private View initView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.speed_spinner_row, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.level_spinner_row, parent, false);
         }
 
-        ImageView imageViewFlag = convertView.findViewById(R.id.speedSpinnerRowIcon);
-        TextView textViewName = convertView.findViewById(R.id.speedSpinnerRowName);
+        ImageView imageViewFlag = convertView.findViewById(R.id.levelSpinnerRowIcon);
+        TextView textViewName = convertView.findViewById(R.id.levelSpinnerRowName);
 
-        SpeedItem currentItem = getItem(position);
+        LevelItem currentItem = getItem(position);
         if (currentItem != null) {
-            imageViewFlag.setImageResource(currentItem.getSpeedIcon());
-            textViewName.setText(currentItem.getSpeedName());
+            imageViewFlag.setImageResource(currentItem.getLevelIcon());
+            textViewName.setText(currentItem.getLevelName());
         }
 
         return convertView;

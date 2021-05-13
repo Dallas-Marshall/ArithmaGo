@@ -16,7 +16,7 @@
     <string name="division">Division</string>
     <string name="multiplication">Multiplication</string>
     <string name="operators">Operators</string>
-    <string name="speed">Speed</string>
+    <string name="level">level</string>
     <string name="default_username">Default Username</string>
     <string name="username">username</string>
     <string name="save">Save</string>
@@ -27,11 +27,11 @@
     <string name="_34">34</string>
     <string name="_10_105_245">10,105,245</string>
     <string name="_3x">3x</string>
-    <string-array name="speeds">
+    <string-array name="levels">
         <item>Slow</item>
         <item>Normal</item>
         <item>Fast</item>
         <item>Lightning</item>
-        <item>God Speed</item>
+        <item>God level</item>
     </string-array>
 </resources>

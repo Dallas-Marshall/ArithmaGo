@@ -57,12 +57,12 @@
         android:textColor="@color/prussian_blue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/speed"
+        android:text="@string/level"
         android:textSize="24sp" />
 
     <Spinner
         android:background="@drawable/outline"
-        android:id="@+id/speedSpinner"
+        android:id="@+id/levelSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
