@@ -22,6 +22,7 @@ public class ArithmaGoGame {
     private final Equation equation;
     private String eqn;
     private String[] possibleAnswers;
+    private int score;
 
     public ArithmaGoGame() {
         this.currentGameLevel = "MEDIUM";
@@ -30,6 +31,7 @@ public class ArithmaGoGame {
         this.isDivisionEnabled = true;
         this.isAdditionEnabled = true;
         this.isSubtractionEnabled = true;
+        this.score = 0;
 
         this.equation = new Equation(currentGameLevel);
         setupOperators(); // List of all possible Operators
@@ -43,9 +45,22 @@ public class ArithmaGoGame {
         this.isDivisionEnabled = isDivisionEnabled;
         this.isAdditionEnabled = isAdditionEnabled;
         this.isSubtractionEnabled = isSubtractionEnabled;
+        this.score = 0;
 
         this.equation = new Equation(currentGameLevel);
         setupOperators(); // List of all possible Operators
+    }
+
+    public String getLastOperator() {
+        return lastOperator;
+    }
+
+    public double getAccuracy() {
+        return accuracy;
+    }
+
+    public int getScore() {
+        return score;
     }
 
     public String[] getPossibleAnswers() {
@@ -141,10 +156,30 @@ public class ArithmaGoGame {
             numberOfIncorrectAnswers++;
         }
         accuracy = (double) numberOfCorrectAnswers / numberOfQuestionsAnswered;
+        if (isCorrect) {
+            updateScore();
+        }
         if (!isDifficultyLocked) {
             updateDifficulty();
         }
         return isCorrect;
+    }
+
+    private void updateScore() {
+        switch (currentGameLevel.toUpperCase()) {
+            case "EASY":
+                score += 100;
+                break;
+            case "MEDIUM":
+                score += 200;
+                break;
+            case "HARD":
+                score += 400;
+                break;
+            case "EXTREME":
+                score += 600;
+                break;
+        }
     }
 
     private void updateDifficulty() {
@@ -153,7 +188,7 @@ public class ArithmaGoGame {
         double HARD_THRESHOLD = 0.85;
 
         // Keep set level at beginning
-        if (numberOfQuestionsAnswered < 5) {
+        if (numberOfQuestionsAnswered > 5) {
             if (accuracy < EASY_THRESHOLD) {
                 currentGameLevel = "EASY";
             } else if (accuracy < MEDIUM_THRESHOLD) {
