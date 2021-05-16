@@ -27,6 +27,8 @@
     <string name="_34">34</string>
     <string name="_10_105_245">10,105,245</string>
     <string name="_3x">3x</string>
+    <string name="medium">Medium</string>
+    <string name="_0">0</string>
     <string-array name="levels">
         <item>Slow</item>
         <item>Normal</item>
