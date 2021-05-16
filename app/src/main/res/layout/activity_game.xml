@@ -12,29 +12,40 @@
         android:layout_height="wrap_content"
         android:background="@color/steel_blue"
         android:gravity="center"
-        android:text="@string/_10_105_245"
+        android:text="@string/_0"
         android:textColor="@color/gold_metallic"
         android:textSize="42sp" />
+
+    <ProgressBar
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="80dp" />
 
     <TextView
         android:id="@+id/equationDisplay"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:layout_weight="1"
         android:gravity="center"
         android:text="@string/_15x12"
         android:textAlignment="center"
         android:textSize="60sp" />
 
-    <LinearLayout
-        android:id="@+id/shieldsDisplay"
-        android:layout_width="match_parent"
-        android:layout_height="fill_parent"
-        android:layout_weight="1"
-        android:orientation="horizontal" />
+    <Button
+        android:id="@+id/answer1"
+        android:layout_width="fill_parent"
+        android:layout_height="100dp"
+        android:text="@string/_0" />
 
-    <au.edu.jcu.cp3406.arithmago.skyview.SkyView
-        android:id="@+id/skyView"
-        android:layout_width="match_parent"
-        android:layout_height="300dp" />
+    <Button
+        android:id="@+id/answer2"
+        android:layout_width="fill_parent"
+        android:layout_height="100dp"
+        android:text="@string/_0" />
+
+    <Button
+        android:id="@+id/answer3"
+        android:layout_width="fill_parent"
+        android:layout_height="100dp"
+        android:text="@string/_0" />
 </LinearLayout>

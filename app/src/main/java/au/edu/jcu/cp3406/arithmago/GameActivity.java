@@ -1,106 +1,97 @@
 package au.edu.jcu.cp3406.arithmago;
 
-import android.graphics.Bitmap;
-import android.graphics.Point;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
-import android.view.View;
-import android.view.ViewGroup;
+import android.util.Log;
+import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import au.edu.jcu.cp3406.arithmago.skyview.Cloud;
-import au.edu.jcu.cp3406.arithmago.skyview.Plane;
-import au.edu.jcu.cp3406.arithmago.skyview.SkyView;
-import au.edu.jcu.cp3406.arithmago.skyview.Utilities;
+import au.edu.jcu.cp3406.arithmago.gamelogic.ArithmaGoGame;
 
 public class GameActivity extends AppCompatActivity {
-    private Handler mainHandler;
-    private Runnable redraw;
-    private boolean isRedrawing;
-    private SkyView skyView;
-    private List<Cloud> clouds;
-    private List<Plane> planes;
+    private Button answerButton01;
+    private Button answerButton02;
+    private Button answerButton03;
+    private TextView equationDisplay;
+
+    // App Variables
+    private SharedPreferences dataSource;
+
+    private ArithmaGoGame game;
+    private String eqn;
+    private String[] possibleAnswers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        clouds = new ArrayList<>();
-        planes = new ArrayList<>();
+        // Load SharedPreferences
+        dataSource = getSharedPreferences("ArithmaGo_Variables", Context.MODE_PRIVATE);
 
-        skyView = findViewById(R.id.skyView);
-        displayShields();
+        answerButton01 = findViewById(R.id.answer1);
+        answerButton02 = findViewById(R.id.answer2);
+        answerButton03 = findViewById(R.id.answer3);
+        equationDisplay = findViewById(R.id.equationDisplay);
 
-        // Draw skyView elements once view dimensions are set
-        skyView.post(new Runnable() {
-            @Override
-            public void run() {
-                int width = skyView.getWidth();
-                int height = skyView.getHeight();
-                drawElements(skyView);
-            }
-        });
-        // setup redrawing
-        mainHandler = new Handler();
-        redraw = new Runnable() {
-            @Override
-            public void run() {
-                if (isRedrawing) {
-                    moveClouds();
-                    skyView.invalidate();
-                    mainHandler.postDelayed(redraw, 1);
-                }
-            }
-        };
+        setupGame();
 
+        updateQuestionDisplay();
     }
 
-    private void displayShields() {
-        // Inflate leaderboard_slot_winner into leaderboardRows
-        ViewGroup leaderboardRows = findViewById(R.id.shieldsDisplay);
-        getLayoutInflater().inflate(R.layout.shield_display, leaderboardRows);
+    private void setupGame() {
+        boolean isMultiplicationEnabled = dataSource.getBoolean("isMultiplicationEnabled", true);
+        boolean isDivisionEnabled = dataSource.getBoolean("isDivisionEnabled", true);
+        boolean isAdditionEnabled = dataSource.getBoolean("isAdditionEnabled", true);
+        boolean isSubtractionEnabled = dataSource.getBoolean("isSubtractionEnabled", true);
+        String level = dataSource.getString("level", "Medium");
+        boolean isDifficultyLocked = !level.equals("Dynamic");
+
+        game = new ArithmaGoGame(level, isDifficultyLocked, isMultiplicationEnabled,
+                isDivisionEnabled, isAdditionEnabled, isSubtractionEnabled);
+        eqn = game.nextQuestion();
+        possibleAnswers = game.getPossibleAnswers();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        isRedrawing = true;
-        mainHandler.post(redraw);
-    }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        isRedrawing = false;
-    }
-
-    public void drawElements(View view) {
-        int boundingWidth = skyView.getWidth();
-        int boundingHeight = skyView.getHeight();
-        float scale = 0.1f;
-        for (int i = 150; i <= 1500; i += 150) {
-            clouds.add(new Cloud(createBitmap(scale, R.drawable.cloud_filled), boundingWidth + i, boundingHeight));
+    private void updateQuestionDisplay() {
+        equationDisplay.setText(eqn);
+        // Randomly set the three possible answers
+        int randomNumber = (int) (Math.random() * 6) + 1;
+        switch (randomNumber) {
+            case 1:
+                answerButton01.setText(possibleAnswers[0]);
+                answerButton02.setText(possibleAnswers[1]);
+                answerButton03.setText(possibleAnswers[2]);
+                break;
+            case 2:
+                answerButton01.setText(possibleAnswers[0]);
+                answerButton02.setText(possibleAnswers[2]);
+                answerButton03.setText(possibleAnswers[1]);
+                break;
+            case 3:
+                answerButton01.setText(possibleAnswers[1]);
+                answerButton02.setText(possibleAnswers[2]);
+                answerButton03.setText(possibleAnswers[0]);
+                break;
+            case 4:
+                answerButton01.setText(possibleAnswers[2]);
+                answerButton02.setText(possibleAnswers[1]);
+                answerButton03.setText(possibleAnswers[0]);
+                break;
+            case 5:
+                answerButton01.setText(possibleAnswers[2]);
+                answerButton02.setText(possibleAnswers[0]);
+                answerButton03.setText(possibleAnswers[1]);
+                break;
+            case 6:
+                answerButton01.setText(possibleAnswers[1]);
+                answerButton02.setText(possibleAnswers[0]);
+                answerButton03.setText(possibleAnswers[2]);
+                break;
         }
-        skyView.setClouds(clouds);
-        skyView.setPlane(new Plane(createBitmap(scale, R.drawable.airplane), boundingWidth, boundingHeight));
-    }
-
-    private void moveClouds() {
-        for (Cloud cloud : clouds) {
-            cloud.move();
-        }
-    }
-
-    private Bitmap createBitmap(float scale, int imageID) {
-        Point size = Utilities.computeSizeInDP(getWindowManager(), 0.5f);
-        Bitmap bitmap = Utilities.decodeBitmap(getResources(), imageID, size);
-        int width = Math.round(bitmap.getWidth() * scale);
-        int height = Math.round(bitmap.getHeight() * scale);
-        return Bitmap.createScaledBitmap(bitmap, width, height, true);
     }
 }
