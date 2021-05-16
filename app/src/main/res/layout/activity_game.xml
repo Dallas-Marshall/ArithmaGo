@@ -17,9 +17,14 @@
         android:textSize="42sp" />
 
     <ProgressBar
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:id="@+id/lifeBar"
+        style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
-        android:layout_height="80dp" />
+        android:layout_height="wrap_content"
+        android:indeterminate="false"
+        android:max="100"
+        android:minHeight="50dp"
+        android:progress="100" />
 
     <TextView
         android:id="@+id/equationDisplay"

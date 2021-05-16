@@ -3,8 +3,9 @@ package au.edu.jcu.cp3406.arithmago;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Handler;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +17,7 @@ public class GameActivity extends AppCompatActivity {
     private Button answerButton02;
     private Button answerButton03;
     private TextView equationDisplay;
+    private ProgressBar lifeBar;
 
     // App Variables
     private SharedPreferences dataSource;
@@ -23,6 +25,8 @@ public class GameActivity extends AppCompatActivity {
     private ArithmaGoGame game;
     private String eqn;
     private String[] possibleAnswers;
+    private int progress = 100;
+    private final Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,10 +40,22 @@ public class GameActivity extends AppCompatActivity {
         answerButton02 = findViewById(R.id.answer2);
         answerButton03 = findViewById(R.id.answer3);
         equationDisplay = findViewById(R.id.equationDisplay);
-
         setupGame();
-
         updateQuestionDisplay();
+
+        lifeBar = findViewById(R.id.lifeBar);
+        progress = lifeBar.getProgress();
+        new Thread(() -> {
+            while (progress > 0) {
+                progress -= 1;
+                handler.post(() -> lifeBar.setProgress(progress));
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
     private void setupGame() {
