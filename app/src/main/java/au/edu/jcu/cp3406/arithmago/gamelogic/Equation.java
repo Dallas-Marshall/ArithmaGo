@@ -75,6 +75,11 @@ public class Equation {
         int answer = calculateAnswer(regex, factors);
         return guess == answer;
     }
+    public int getAnswer(String operator, String equation) {
+        String regex = getRegex(operator);
+        String[] factors = equation.split(regex);
+        return calculateAnswer(regex, factors);
+    }
 
     public String[] generateAnswers(String operator, String equation) {
         String[] possibleAnswers = new String[3];
