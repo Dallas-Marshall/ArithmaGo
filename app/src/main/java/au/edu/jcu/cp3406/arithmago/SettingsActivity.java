@@ -74,7 +74,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void setSelectedlevelItem() {
         // Set the selectedlevelItem to match dataSource
-        switch (dataSource.getString("level", "Normal")) {
+        switch (dataSource.getString("level", "Medium")) {
             case "Dynamic":
                 selectedlevelItem = levelList.get(0);
                 break;
