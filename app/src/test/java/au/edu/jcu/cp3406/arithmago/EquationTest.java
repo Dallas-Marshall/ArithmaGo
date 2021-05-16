@@ -4,11 +4,11 @@ import org.junit.Test;
 
 import java.util.Locale;
 
-import au.edu.jcu.cp3406.arithmago.gamelogic.CountdownTimer;
 import au.edu.jcu.cp3406.arithmago.gamelogic.Equation;
 import au.edu.jcu.cp3406.arithmago.gamelogic.Level;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class EquationTest {
@@ -120,12 +120,33 @@ public class EquationTest {
     }
 
     @Test
-    public void InvalidOperatorException() {
+    public void testInvalidOperatorException() {
         try {
             Equation equation = new Equation();
             equation.generate("cake");
         } catch (Equation.InvalidOperatorException e) {
             assertEquals("'cake' is not a valid operator", e.getMessage());
+        }
+    }
+
+    @Test
+    public void testGenerateAnswers() {
+        try {
+            Equation equation = new Equation();
+            String eqn = equation.generate("ADDITION");
+
+            String[] answer = equation.generateAnswers("ADDITION", eqn);
+
+            boolean isCorrectAnswer = false;
+            for (int i = 0; i < 3; i++) {
+                isCorrectAnswer = equation.checkAnswer("ADDITION", eqn, Integer.parseInt(answer[i]));
+                if (isCorrectAnswer) {
+                    break;
+                }
+            }
+            assertTrue(isCorrectAnswer);
+        } catch (Equation.InvalidOperatorException e) {
+            fail();
         }
     }
 }

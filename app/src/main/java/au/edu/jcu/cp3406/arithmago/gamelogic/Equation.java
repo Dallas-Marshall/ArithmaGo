@@ -69,7 +69,28 @@ public class Equation {
         return (int) Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    public boolean checkAnswer(String operator, String equation, int answer) {
+    public boolean checkAnswer(String operator, String equation, int guess) {
+        String regex = getRegex(operator);
+        String[] factors = equation.split(regex);
+        int answer = calculateAnswer(regex, factors);
+        return guess == answer;
+    }
+
+    public String[] generateAnswers(String operator, String equation) {
+        String[] possibleAnswers = new String[3];
+        String regex = getRegex(operator);
+        String[] factors = equation.split(regex);
+        Locale locale = Locale.getDefault();
+
+        for (int i = 0; i < 2; ++i) {
+            possibleAnswers[i] = String.format(locale, "%d", (calculateAnswer(regex, factors) + (int) (Math.random() * 4)));
+        }
+        possibleAnswers[2] = String.format(locale, "%d", (calculateAnswer(regex, factors)));
+
+        return possibleAnswers;
+    }
+
+    public String getRegex(String operator) {
         String regex;
         switch (operator.toLowerCase()) {
             case "division":
@@ -85,23 +106,26 @@ public class Equation {
                 regex = "x";
                 break;
         }
-        String[] factors = equation.split(regex);
-        int total;
+        return regex;
+    }
+
+    private int calculateAnswer(String regex, String[] factors) {
+        int answer;
         switch (regex) {
             case "÷":
-                total = Integer.parseInt(factors[0].trim()) / Integer.parseInt(factors[1].trim());
+                answer = Integer.parseInt(factors[0].trim()) / Integer.parseInt(factors[1].trim());
                 break;
             case "\\+":
-                total = Integer.parseInt(factors[0].trim()) + Integer.parseInt(factors[1].trim());
+                answer = Integer.parseInt(factors[0].trim()) + Integer.parseInt(factors[1].trim());
                 break;
             case "-":
-                total = Integer.parseInt(factors[0].trim()) - Integer.parseInt(factors[1].trim());
+                answer = Integer.parseInt(factors[0].trim()) - Integer.parseInt(factors[1].trim());
                 break;
             default:
-                total = Integer.parseInt(factors[0].trim()) * Integer.parseInt(factors[1].trim());
+                answer = Integer.parseInt(factors[0].trim()) * Integer.parseInt(factors[1].trim());
                 break;
         }
-        return answer == total;
+        return answer;
     }
 
     public static class InvalidOperatorException extends Exception {

@@ -21,6 +21,7 @@ public class ArithmaGoGame {
 
     private final Equation equation;
     private String eqn;
+    private String[] possibleAnswers;
 
     public ArithmaGoGame() {
         this.currentGameLevel = "MEDIUM";
@@ -47,8 +48,8 @@ public class ArithmaGoGame {
         setupOperators(); // List of all possible Operators
     }
 
-    public String getLastOperator() {
-        return lastOperator;
+    public String[] getPossibleAnswers() {
+        return possibleAnswers;
     }
 
     public String getCurrentGameLevel() {
@@ -98,24 +99,28 @@ public class ArithmaGoGame {
                     case 0:
                         if (isMultiplicationEnabled) {
                             eqn = equation.generate("multiplication");
+                            possibleAnswers = equation.generateAnswers("multiplication", eqn);
                             lastOperator = "multiplication";
                         }
                         break;
                     case 1:
                         if (isDivisionEnabled) {
                             eqn = equation.generate("division");
+                            possibleAnswers = equation.generateAnswers("division", eqn);
                             lastOperator = "division";
                         }
                         break;
                     case 2:
                         if (isAdditionEnabled) {
                             eqn = equation.generate("addition");
+                            possibleAnswers = equation.generateAnswers("addition", eqn);
                             lastOperator = "addition";
                         }
                         break;
                     default:
                         if (isSubtractionEnabled) {
                             eqn = equation.generate("subtraction");
+                            possibleAnswers = equation.generateAnswers("subtraction", eqn);
                             lastOperator = "subtraction";
                         }
                         break;
