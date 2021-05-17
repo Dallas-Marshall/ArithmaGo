@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Random;
 
-import au.edu.jcu.cp3406.arithmago.R;
-
 
 public class Equation {
     private final Locale locale = Locale.getDefault();
@@ -91,13 +89,12 @@ public class Equation {
         String[] possibleAnswers = new String[3];
         String regex = getRegex(operator);
         String[] factors = equation.split(regex);
-        Locale locale = Locale.getDefault();
         Random random = new Random();
         NumberFormat nf = new DecimalFormat("###.###");
 
         double numberToDisplay;
         double answer = calculateAnswer(regex, factors);
-        if ((answer < 3) && (answer > -3)) { // Answer is a small number
+        if ((answer < 3) && (answer > -3) && (operator.toLowerCase().equals("division"))) { // Answer is likely to be a decimal
             for (int i = 0; i < 2; ++i) {
                 double salt = random.nextDouble() + 0.01;
                 if (random.nextBoolean()) {
@@ -123,7 +120,6 @@ public class Equation {
                 }
                 possibleAnswers[i] = nf.format(numberToDisplay);
             }
-            numberToDisplay = answer;
         }
         possibleAnswers[2] = nf.format((answer));
         return possibleAnswers;
