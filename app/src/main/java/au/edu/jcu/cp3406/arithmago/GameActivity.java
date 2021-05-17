@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -126,13 +125,17 @@ public class GameActivity extends AppCompatActivity {
 
     public void answerSelected(View view) {
         Button buttonPressed = (Button) view;
-        int selectedAnswer = Integer.parseInt(buttonPressed.getText().toString());
+        double selectedAnswer = Double.parseDouble(buttonPressed.getText().toString());
         boolean isCorrect = game.checkAnswer(selectedAnswer);
-        Log.i("Score", String.format(locale, "%b", isCorrect));
 
         if (isCorrect) {
             scoreDisplay.setText(String.format(locale, "%d", game.getScore()));
-            Log.i("Score", String.format(locale, "%d", game.getScore()));
+            progress += 5;
+            if (progress > 100) {
+                progress = 100;
+            }
+        } else {
+            progress -= 5;
         }
         displayNextQuestion();
     }
