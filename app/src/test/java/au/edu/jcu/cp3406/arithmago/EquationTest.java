@@ -139,7 +139,7 @@ public class EquationTest {
 
             boolean isCorrectAnswer = false;
             for (int i = 0; i < 3; i++) {
-                isCorrectAnswer = equation.checkAnswer("ADDITION", eqn, Integer.parseInt(answer[i]));
+                isCorrectAnswer = equation.checkAnswer("ADDITION", eqn, Double.parseDouble(answer[i]));
                 if (isCorrectAnswer) {
                     break;
                 }

@@ -62,7 +62,7 @@ public class ArithmaGoGameTest {
         for (int i = 1; i < 7; i++) {
             String eqn1 = game3.nextQuestion(); // Generate equation
             String eqn1Operator = game3.getLastOperator(); // Get operator
-            int eqn1Answer = testingEquationClass.getAnswer(eqn1Operator, eqn1); // Calculate answer
+            double eqn1Answer = testingEquationClass.getAnswer(eqn1Operator, eqn1); // Calculate answer
 
             assertTrue(game3.checkAnswer(eqn1Answer));
             assert game3.getScore() == (200 * i);
@@ -72,7 +72,7 @@ public class ArithmaGoGameTest {
         assertEquals("EXTREME", game3.getCurrentGameLevel());
         String eqn2 = game3.nextQuestion();
         String eqn2Operator = game3.getLastOperator();
-        int eqn2Answer = testingEquationClass.getAnswer(eqn2Operator, eqn2);
+        double eqn2Answer = testingEquationClass.getAnswer(eqn2Operator, eqn2);
 
         assertTrue(game3.checkAnswer(eqn2Answer));
         assert game3.getScore() == (200 * 6 + 600);
@@ -84,7 +84,7 @@ public class ArithmaGoGameTest {
         for (int i = 0; i < 3; i++) {
             String eqn3 = game3.nextQuestion();
             String eqn3Operator = game3.getLastOperator();
-            int eqn3Answer = testingEquationClass.getAnswer(eqn3Operator, eqn3);
+            double eqn3Answer = testingEquationClass.getAnswer(eqn3Operator, eqn3);
 
             assertFalse(game3.checkAnswer(eqn3Answer + 1));
             assert game3.getScore() == (200 * 6 + 600);

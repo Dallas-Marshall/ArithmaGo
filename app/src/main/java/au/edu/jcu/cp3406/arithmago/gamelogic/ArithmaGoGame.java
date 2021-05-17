@@ -147,7 +147,7 @@ public class ArithmaGoGame {
         return eqn;
     }
 
-    public boolean checkAnswer(int answer) {
+    public boolean checkAnswer(double answer) {
         boolean isCorrect = equation.checkAnswer(lastOperator, eqn, answer);
         numberOfQuestionsAnswered++;
         if (isCorrect) {

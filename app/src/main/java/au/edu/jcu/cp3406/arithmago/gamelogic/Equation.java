@@ -1,7 +1,12 @@
 package au.edu.jcu.cp3406.arithmago.gamelogic;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Random;
+
+import au.edu.jcu.cp3406.arithmago.R;
 
 
 public class Equation {
@@ -69,13 +74,14 @@ public class Equation {
         return (int) Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    public boolean checkAnswer(String operator, String equation, int guess) {
+    public boolean checkAnswer(String operator, String equation, double guess) {
         String regex = getRegex(operator);
         String[] factors = equation.split(regex);
-        int answer = calculateAnswer(regex, factors);
+        double answer = calculateAnswer(regex, factors);
         return guess == answer;
     }
-    public int getAnswer(String operator, String equation) {
+
+    public double getAnswer(String operator, String equation) {
         String regex = getRegex(operator);
         String[] factors = equation.split(regex);
         return calculateAnswer(regex, factors);
@@ -86,12 +92,40 @@ public class Equation {
         String regex = getRegex(operator);
         String[] factors = equation.split(regex);
         Locale locale = Locale.getDefault();
+        Random random = new Random();
+        NumberFormat nf = new DecimalFormat("###.###");
 
-        for (int i = 0; i < 2; ++i) {
-            possibleAnswers[i] = String.format(locale, "%d", (calculateAnswer(regex, factors) + (int) (Math.random() * 4)));
+        double numberToDisplay;
+        double answer = calculateAnswer(regex, factors);
+        if ((answer < 3) && (answer > -3)) { // Answer is a small number
+            for (int i = 0; i < 2; ++i) {
+                double salt = random.nextDouble() + 0.01;
+                if (random.nextBoolean()) {
+                    numberToDisplay = answer + salt;
+                } else {
+                    numberToDisplay = answer - salt;
+                }
+                if ((i == 1) && (numberToDisplay == Double.parseDouble(possibleAnswers[0]))) { // Answers are the same
+                    numberToDisplay += 0.01;
+                }
+                possibleAnswers[i] = nf.format(numberToDisplay);
+            }
+        } else { // Answer is a whole number
+            for (int i = 0; i < 2; ++i) {
+                int salt = random.nextInt(7) + 1;
+                if (random.nextBoolean()) {
+                    numberToDisplay = answer + salt;
+                } else {
+                    numberToDisplay = answer - salt;
+                }
+                if ((i == 1) && (numberToDisplay == Double.parseDouble(possibleAnswers[0]))) { // Answers are the same
+                    numberToDisplay += 1;
+                }
+                possibleAnswers[i] = nf.format(numberToDisplay);
+            }
+            numberToDisplay = answer;
         }
-        possibleAnswers[2] = String.format(locale, "%d", (calculateAnswer(regex, factors)));
-
+        possibleAnswers[2] = nf.format((answer));
         return possibleAnswers;
     }
 
@@ -114,20 +148,20 @@ public class Equation {
         return regex;
     }
 
-    private int calculateAnswer(String regex, String[] factors) {
-        int answer;
+    private double calculateAnswer(String regex, String[] factors) {
+        double answer;
         switch (regex) {
             case "÷":
-                answer = Integer.parseInt(factors[0].trim()) / Integer.parseInt(factors[1].trim());
+                answer = Double.parseDouble(factors[0].trim()) / Double.parseDouble(factors[1].trim());
                 break;
             case "\\+":
-                answer = Integer.parseInt(factors[0].trim()) + Integer.parseInt(factors[1].trim());
+                answer = Double.parseDouble(factors[0].trim()) + Double.parseDouble(factors[1].trim());
                 break;
             case "-":
-                answer = Integer.parseInt(factors[0].trim()) - Integer.parseInt(factors[1].trim());
+                answer = Double.parseDouble(factors[0].trim()) - Double.parseDouble(factors[1].trim());
                 break;
             default:
-                answer = Integer.parseInt(factors[0].trim()) * Integer.parseInt(factors[1].trim());
+                answer = Double.parseDouble(factors[0].trim()) * Double.parseDouble(factors[1].trim());
                 break;
         }
         return answer;
