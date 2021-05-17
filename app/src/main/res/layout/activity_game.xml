@@ -32,6 +32,7 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:gravity="center"
+        android:onClick="answerSelected"
         android:text="@string/_15x12"
         android:textAlignment="center"
         android:textSize="60sp" />
@@ -40,17 +41,20 @@
         android:id="@+id/answer1"
         android:layout_width="fill_parent"
         android:layout_height="100dp"
+        android:onClick="answerSelected"
         android:text="@string/_0" />
 
     <Button
         android:id="@+id/answer2"
         android:layout_width="fill_parent"
         android:layout_height="100dp"
+        android:onClick="answerSelected"
         android:text="@string/_0" />
 
     <Button
         android:id="@+id/answer3"
         android:layout_width="fill_parent"
         android:layout_height="100dp"
+        android:onClick="answerSelected"
         android:text="@string/_0" />
 </LinearLayout>

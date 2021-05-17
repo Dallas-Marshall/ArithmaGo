@@ -4,11 +4,15 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.Locale;
 
 import au.edu.jcu.cp3406.arithmago.gamelogic.ArithmaGoGame;
 
@@ -18,13 +22,13 @@ public class GameActivity extends AppCompatActivity {
     private Button answerButton03;
     private TextView equationDisplay;
     private ProgressBar lifeBar;
+    private TextView scoreDisplay;
+    private Locale locale;
 
     // App Variables
     private SharedPreferences dataSource;
 
     private ArithmaGoGame game;
-    private String eqn;
-    private String[] possibleAnswers;
     private int progress = 100;
     private final Handler handler = new Handler();
 
@@ -32,6 +36,7 @@ public class GameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+        locale = Locale.getDefault();
 
         // Load SharedPreferences
         dataSource = getSharedPreferences("ArithmaGo_Variables", Context.MODE_PRIVATE);
@@ -41,7 +46,8 @@ public class GameActivity extends AppCompatActivity {
         answerButton03 = findViewById(R.id.answer3);
         equationDisplay = findViewById(R.id.equationDisplay);
         setupGame();
-        updateQuestionDisplay();
+        displayNextQuestion();
+        scoreDisplay = findViewById(R.id.scoreDisplay);
 
         lifeBar = findViewById(R.id.lifeBar);
         progress = lifeBar.getProgress();
@@ -64,16 +70,23 @@ public class GameActivity extends AppCompatActivity {
         boolean isAdditionEnabled = dataSource.getBoolean("isAdditionEnabled", true);
         boolean isSubtractionEnabled = dataSource.getBoolean("isSubtractionEnabled", true);
         String level = dataSource.getString("level", "Medium");
-        boolean isDifficultyLocked = !level.equals("Dynamic");
+        boolean isDifficultyLocked;
+        if (level.equals("Dynamic")) {
+            isDifficultyLocked = false;
+            level = "Medium";
+        } else {
+            isDifficultyLocked = true;
+        }
 
         game = new ArithmaGoGame(level, isDifficultyLocked, isMultiplicationEnabled,
                 isDivisionEnabled, isAdditionEnabled, isSubtractionEnabled);
-        eqn = game.nextQuestion();
-        possibleAnswers = game.getPossibleAnswers();
     }
 
 
-    private void updateQuestionDisplay() {
+    private void displayNextQuestion() {
+        String eqn = game.nextQuestion();
+        String[] possibleAnswers = game.getPossibleAnswers();
+
         equationDisplay.setText(eqn);
         // Randomly set the three possible answers
         int randomNumber = (int) (Math.random() * 6) + 1;
@@ -109,5 +122,18 @@ public class GameActivity extends AppCompatActivity {
                 answerButton03.setText(possibleAnswers[2]);
                 break;
         }
+    }
+
+    public void answerSelected(View view) {
+        Button buttonPressed = (Button) view;
+        int selectedAnswer = Integer.parseInt(buttonPressed.getText().toString());
+        boolean isCorrect = game.checkAnswer(selectedAnswer);
+        Log.i("Score", String.format(locale, "%b", isCorrect));
+
+        if (isCorrect) {
+            scoreDisplay.setText(String.format(locale, "%d", game.getScore()));
+            Log.i("Score", String.format(locale, "%d", game.getScore()));
+        }
+        displayNextQuestion();
     }
 }
