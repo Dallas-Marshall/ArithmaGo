@@ -29,6 +29,11 @@
     <string name="_3x">3x</string>
     <string name="medium">Medium</string>
     <string name="_0">0</string>
+    <string name="correct">Correct</string>
+    <string name="incorrect">Incorrect</string>
+    <string name="score">Score:</string>
+    <string name="view_leaderboard">View Leaderboard</string>
+    <string name="podium">Podium</string>
     <string-array name="levels">
         <item>Slow</item>
         <item>Normal</item>
