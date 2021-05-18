@@ -1,6 +1,7 @@
 package au.edu.jcu.cp3406.arithmago;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -26,6 +27,7 @@ public class GameActivity extends AppCompatActivity {
 
     // App Variables
     private SharedPreferences dataSource;
+    private ArithmaGoDatabaseAdapter database;
 
     private ArithmaGoGame game;
     private int progress = 100;
@@ -39,6 +41,7 @@ public class GameActivity extends AppCompatActivity {
 
         // Load SharedPreferences
         dataSource = getSharedPreferences("ArithmaGo_Variables", Context.MODE_PRIVATE);
+        database = new ArithmaGoDatabaseAdapter(this);
 
         answerButton01 = findViewById(R.id.answer1);
         answerButton02 = findViewById(R.id.answer2);
@@ -60,7 +63,23 @@ public class GameActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
+            addLeaderboardRecord();
+
+            // Move to results activity with necessary variables
+            Intent intent = new Intent(this, ResultsActivity.class);
+            intent.putExtra("numberOfIncorrectAnswers", game.getNumberOfIncorrectAnswers());
+            intent.putExtra("numberOfCorrectAnswers", game.getNumberOfCorrectAnswers());
+            intent.putExtra("score", game.getScore());
+            startActivity(intent);
+            finish();
         }).start();
+    }
+
+    public void addLeaderboardRecord() {
+        String username = dataSource.getString("username", "Guest");
+        String level = dataSource.getString("level", "Dynamic");
+        int score = game.getScore();
+        database.insertData(username, score, level);
     }
 
     private void setupGame() {
@@ -80,7 +99,6 @@ public class GameActivity extends AppCompatActivity {
         game = new ArithmaGoGame(level, isDifficultyLocked, isMultiplicationEnabled,
                 isDivisionEnabled, isAdditionEnabled, isSubtractionEnabled);
     }
-
 
     private void displayNextQuestion() {
         String eqn = game.nextQuestion();
@@ -130,12 +148,12 @@ public class GameActivity extends AppCompatActivity {
 
         if (isCorrect) {
             scoreDisplay.setText(String.format(locale, "%d", game.getScore()));
-            progress += 5;
+            progress += 2;
             if (progress > 100) {
                 progress = 100;
             }
         } else {
-            progress -= 5;
+            progress -= 10;
         }
         displayNextQuestion();
     }
