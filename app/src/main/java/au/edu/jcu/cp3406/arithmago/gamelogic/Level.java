@@ -1,9 +1,9 @@
 package au.edu.jcu.cp3406.arithmago.gamelogic;
 
 public class Level {
-    private int min;
-    private int max;
-    private String level;
+    private final int min;
+    private final int max;
+    private final String level;
 
     public Level() {
         this.min = 1;
