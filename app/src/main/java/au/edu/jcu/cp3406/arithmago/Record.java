@@ -1,9 +1,11 @@
 package au.edu.jcu.cp3406.arithmago;
 
+import androidx.annotation.NonNull;
+
 public class Record {
-    private String username;
-    private int score;
-    private String level;
+    private final String username;
+    private final int score;
+    private final String level;
 
     public Record(String username, int score, String level) {
         this.username = username;
@@ -21,5 +23,15 @@ public class Record {
 
     public String getLevel() {
         return level;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "Record{" +
+                "username='" + username + '\'' +
+                ", score=" + score +
+                ", level='" + level + '\'' +
+                '}';
     }
 }
