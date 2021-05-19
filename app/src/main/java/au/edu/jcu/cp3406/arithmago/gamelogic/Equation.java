@@ -52,6 +52,9 @@ public class Equation {
 
             int multiplier = generateRandomIntInRange(min, max); // First Number
             int multiplicand = generateRandomIntInRange(min, max); // Second Number
+            if (multiplicand == 0) {
+                multiplicand = 1;
+            }
             return String.format(locale, "%d %s %d", multiplier, operatorSymbol, multiplicand);
         } catch (ClassCastException e) {
             throw new InvalidOperatorException(String.format("'%s' is not a valid operator", operator));
