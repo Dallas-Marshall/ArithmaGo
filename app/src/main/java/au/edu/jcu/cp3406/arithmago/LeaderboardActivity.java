@@ -1,5 +1,7 @@
 package au.edu.jcu.cp3406.arithmago;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
@@ -18,6 +20,11 @@ import java.util.Random;
 public class LeaderboardActivity extends AppCompatActivity {
     private Random random;
     private Locale locale;
+
+    // App Variables
+    private SharedPreferences dataSource;
+    private ArithmaGoDatabaseAdapter database;
+
     private static final int[] avatars = {
             R.drawable.avatar_01,
             R.drawable.avatar_02,
@@ -33,9 +40,13 @@ public class LeaderboardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leaderboard);
+
         locale = Locale.getDefault();
         random = new Random();
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+
+        dataSource = getSharedPreferences("ArithmaGo_Variables", Context.MODE_PRIVATE);
+        database = new ArithmaGoDatabaseAdapter(this);
 
         populateLeaderboard();
     }
@@ -81,14 +92,19 @@ public class LeaderboardActivity extends AppCompatActivity {
      * Adds top 10 high scores to leaderboardRows.
      */
     private void populateLeaderboard() {
-        // TODO: Sort db
-        // TODO: Fetch winner username from db
-        // TODO: Fetch winner highScore from db
-        addLeaderboardWinner("mobpuncher1", 10237);
-        for (int position = 2; position < 11; position++) { // TODO: Iterate through every record in cursor
-            // TODO: Fetch username from db
-            // TODO: Fetch highScore from db
-            addLeaderboardRow(position, "mobpuncher1", (10000 - (position * 361)));
+        String level = dataSource.getString("level", "Dynamic");
+        Leaderboard leaderboard = database.getRecords(level);
+        int numberOfRecords = leaderboard.getRecords().size();
+
+        if (numberOfRecords > 1) {
+            Record winner = leaderboard.getRecords().get(0);
+            addLeaderboardWinner(winner.getUsername(), winner.getScore());
+        }
+        if (numberOfRecords > 2) {
+            for (int index = 1; index < numberOfRecords; index++) {
+                Record record = leaderboard.getRecords().get(index);
+                addLeaderboardRow(index + 1, record.getUsername(), record.getScore());
+            }
         }
     }
 
@@ -137,7 +153,7 @@ public class LeaderboardActivity extends AppCompatActivity {
 
         // Set positionNumber
         TextView positionNumber = lastRow.findViewById(R.id.positionNumber);
-        String pos = String.format(locale, "%s", position);
+        String pos = String.format(locale, "%s.", position);
         positionNumber.setText(pos);
 
         // Set Username
@@ -153,17 +169,21 @@ public class LeaderboardActivity extends AppCompatActivity {
         ImageView avatar = lastRow.findViewById(R.id.avatar);
         avatar.setImageDrawable(getResources().getDrawableForDensity(avatars[randIndex], 0));
 
-        // Set Medal Colours
+        // Customise 2nd and 3rd records
         if (position == 2) {        // Silver Medal
             int silver = Color.rgb(197, 197, 197);
             lastRow.setBackgroundColor(silver);
             int davys_grey = Color.rgb(71, 71, 71);
             positionNumber.setTextColor(davys_grey);
+            String positionToDisplay = "2nd";
+            positionNumber.setText(positionToDisplay);
             usernameDisplay.setTextColor(davys_grey);
             highScoreDisplay.setTextColor(davys_grey);
         } else if (position == 3) { // Bronze Medal
             int copper_crayola = Color.rgb(221, 144, 114);
             lastRow.setBackgroundColor(copper_crayola);
+            String positionToDisplay = "3rd";
+            positionNumber.setText(positionToDisplay);
         }
     }
 
