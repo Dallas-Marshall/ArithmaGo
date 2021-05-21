@@ -1,4 +1,4 @@
-package au.edu.jcu.cp3406.arithmago;
+package au.edu.jcu.cp3406.arithmago.levelSpinner;
 
 /**
  * Custom class to store details of custom level_spinner_row objects.

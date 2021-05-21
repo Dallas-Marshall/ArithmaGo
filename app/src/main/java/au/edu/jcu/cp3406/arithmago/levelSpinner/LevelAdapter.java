@@ -1,4 +1,4 @@
-package au.edu.jcu.cp3406.arithmago;
+package au.edu.jcu.cp3406.arithmago.levelSpinner;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
+
+import au.edu.jcu.cp3406.arithmago.R;
 
 /**
  * Extension of ArrayAdapter to work with LevelItem objects.
