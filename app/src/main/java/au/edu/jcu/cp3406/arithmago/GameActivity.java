@@ -156,4 +156,13 @@ public class GameActivity extends AppCompatActivity {
         }
         displayNextQuestion();
     }
+
+    /**
+     * Stops the activity when the back button is pressed.
+     */
+    @Override
+    public void onBackPressed() {
+        finish();
+        super.onBackPressed();
+    }
 }
