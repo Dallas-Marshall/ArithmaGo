@@ -1,6 +1,7 @@
 package au.edu.jcu.cp3406.arithmago;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ import au.edu.jcu.cp3406.arithmago.database.Record;
 public class LeaderboardActivity extends AppCompatActivity {
     private Random random;
     private Locale locale;
+    Record winner;
 
     // App Variables
     private SharedPreferences dataSource;
@@ -67,10 +69,25 @@ public class LeaderboardActivity extends AppCompatActivity {
                 finish();
                 return true;
             case (R.id.shareIcon):
-                // TODO: Implement social media sharing
+                shareOptionSelected();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void shareOptionSelected() {
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.setType("text/plain");
+
+        if (winner != null) {
+            String messageToDisplay = String.format(locale, "%s is currently the top scorer on ArithmaGo with a score of: %d. Can you beat them?", winner.getUsername(), winner.getScore());
+            sendIntent.putExtra(Intent.EXTRA_TEXT, messageToDisplay);
+        } else {
+            sendIntent.putExtra(Intent.EXTRA_TEXT, "The top spot on ArithmaGo is yours for the taking.");
         }
 
-        return super.onOptionsItemSelected(item);
+        Intent shareIntent = Intent.createChooser(sendIntent, null);
+        startActivity(shareIntent);
     }
 
     /**
@@ -101,7 +118,7 @@ public class LeaderboardActivity extends AppCompatActivity {
         int numberOfRecords = leaderboard.getRecords().size();
 
         if (numberOfRecords > 1) {
-            Record winner = leaderboard.getRecords().get(0);
+            winner = leaderboard.getRecords().get(0);
             addLeaderboardWinner(winner.getUsername(), winner.getScore());
         }
         if (numberOfRecords > 2) {

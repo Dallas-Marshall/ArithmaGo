@@ -1,28 +1,35 @@
 package au.edu.jcu.cp3406.arithmago;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.util.Locale;
 
 public class ResultsActivity extends AppCompatActivity {
+    private Locale locale;
+    private SharedPreferences dataSource;
+    int score;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
-        Locale locale = Locale.getDefault();
+        locale = Locale.getDefault();
 
+        // Load App Variables and values from intent
+        dataSource = getSharedPreferences("ArithmaGo_Variables", Context.MODE_PRIVATE);
         Intent intent = getIntent();
         int numberOfCorrectAnswers = intent.getIntExtra("numberOfCorrectAnswers", 0);
         int numberOfIncorrectAnswers = intent.getIntExtra("numberOfIncorrectAnswers", 0);
-        int score = intent.getIntExtra("score", 0);
+        score = intent.getIntExtra("score", 0);
 
         TextView numberCorrectDisplay = findViewById(R.id.numberCorrectDisplay);
         TextView numberIncorrectDisplay = findViewById(R.id.numberIncorrectDisplay);
@@ -43,13 +50,24 @@ public class ResultsActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 // TODO: Route to Homepage
-                // finish();
+                finish();
                 return true;
             case (R.id.shareIcon):
-                // TODO: Implement social media sharing
+                shareOptionSelected();
         }
-
         return super.onOptionsItemSelected(item);
+    }
+
+    private void shareOptionSelected() {
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.setType("text/plain");
+
+        String username = dataSource.getString("username", "Guest");
+        String messageToDisplay = String.format(locale, "%s just scored %d on ArithmaGo! Can you top that?", username, score);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, messageToDisplay);
+        Intent shareIntent = Intent.createChooser(sendIntent, null);
+        startActivity(shareIntent);
     }
 
     /**
@@ -67,8 +85,7 @@ public class ResultsActivity extends AppCompatActivity {
      */
     @Override
     public void onBackPressed() {
-        // TODO: Route to Homepage
-        // finish();
+        finish();
         super.onBackPressed();
     }
 
