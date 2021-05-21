@@ -1,4 +1,4 @@
-package au.edu.jcu.cp3406.arithmago;
+package au.edu.jcu.cp3406.arithmago.database;
 
 import android.content.Context;
 import android.widget.Toast;
