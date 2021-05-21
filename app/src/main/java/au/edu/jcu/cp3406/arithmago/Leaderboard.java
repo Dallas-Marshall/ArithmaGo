@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 import java.util.ArrayList;
 
 public class Leaderboard {
-    private ArrayList<Record> records;
+    private final ArrayList<Record> records;
 
     public Leaderboard() {
         records = new ArrayList<>();
