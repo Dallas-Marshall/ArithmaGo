@@ -7,53 +7,7 @@
     tools:context=".SettingsActivity">
 
     <TextView
-        android:textColor="@color/prussian_blue"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/operators"
-        android:textSize="24sp" />
-
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/checkboxes"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <CheckBox
-            android:id="@+id/multiplicationCheckbox"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:paddingBottom="-5dp"
-            android:text="@string/multiplication" />
-
-        <CheckBox
-            android:id="@+id/divisionCheckbox"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:paddingBottom="-5dp"
-            android:text="@string/division" />
-
-        <CheckBox
-            android:id="@+id/additionCheckbox"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:paddingBottom="-5dp"
-            android:text="@string/addition" />
-
-        <CheckBox
-            android:id="@+id/subtractionCheckbox"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:paddingBottom="-5dp"
-            android:text="@string/subtraction" />
-    </androidx.appcompat.widget.LinearLayoutCompat>
-
-    <TextView
+        android:layout_marginTop="25dp"
         android:textColor="@color/prussian_blue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -70,6 +24,7 @@
         android:layout_marginEnd="50dp"/>
 
     <TextView
+        android:layout_marginTop="25dp"
         android:textColor="@color/prussian_blue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

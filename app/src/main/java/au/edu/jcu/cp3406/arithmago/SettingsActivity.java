@@ -9,10 +9,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,10 +24,6 @@ public class SettingsActivity extends AppCompatActivity {
 
     // View Elements
     private Spinner levelSpinner;
-    private CheckBox multiplicationCheckBox;
-    private CheckBox divisionCheckBox;
-    private CheckBox additionCheckBox;
-    private CheckBox subtractionCheckBox;
     private EditText usernameEntry;
 
     // App Variables
@@ -48,10 +42,12 @@ public class SettingsActivity extends AppCompatActivity {
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(false);
 
+        levelSpinner = findViewById(R.id.levelSpinner);
         generatelevelList();// Define levelSpinner custom layouts
         setSelectedlevelItem();// Set the selectedlevelItem to match dataSource
-        findActivityViews();
-        levelSpinner = setuplevelSpinner();
+        levelSpinner = setupLevelSpinner();
+
+        usernameEntry = findViewById(R.id.usernameEntry);
         updateCurrentViewState(); // Set view elements to match dataSource
         usernameEntry.addTextChangedListener(textWatcher);
     }
@@ -93,16 +89,7 @@ public class SettingsActivity extends AppCompatActivity {
         }
     }
 
-    private void findActivityViews() {
-        levelSpinner = findViewById(R.id.levelSpinner);
-        multiplicationCheckBox = findViewById(R.id.multiplicationCheckbox);
-        divisionCheckBox = findViewById(R.id.divisionCheckbox);
-        additionCheckBox = findViewById(R.id.additionCheckbox);
-        subtractionCheckBox = findViewById(R.id.subtractionCheckbox);
-        usernameEntry = findViewById(R.id.usernameEntry);
-    }
-
-    private Spinner setuplevelSpinner() {
+    private Spinner setupLevelSpinner() {
         levelSpinner = findViewById(R.id.levelSpinner);
 
         // Set levelAdapter to levelSpinner
@@ -129,10 +116,6 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void updateCurrentViewState() {
         // Set view elements to match dataSource
-        multiplicationCheckBox.setChecked(dataSource.getBoolean("isMultiplicationEnabled", true));
-        divisionCheckBox.setChecked(dataSource.getBoolean("isDivisionEnabled", true));
-        additionCheckBox.setChecked(dataSource.getBoolean("isAdditionEnabled", true));
-        subtractionCheckBox.setChecked(dataSource.getBoolean("isSubtractionEnabled", true));
         usernameEntry.setText(dataSource.getString("username", "Guest"));
         levelSpinner.setSelection(levelAdapter.getPosition(selectedlevelItem));
     }
@@ -155,39 +138,15 @@ public class SettingsActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (checkValidCheckboxSelection()) { // Minimum one operator selected
-            saveCheckboxState();
             finish();
-        }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (checkValidCheckboxSelection()) { // Minimum one operator selected
             if (item.getItemId() == R.id.save) {
-                saveCheckboxState();
                 finish();
                 return true;
             }
-        }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void saveCheckboxState() {
-        SharedPreferences.Editor editor = dataSource.edit();
-        editor.putBoolean("isMultiplicationEnabled", multiplicationCheckBox.isChecked());
-        editor.putBoolean("isDivisionEnabled", divisionCheckBox.isChecked());
-        editor.putBoolean("isAdditionEnabled", additionCheckBox.isChecked());
-        editor.putBoolean("isSubtractionEnabled", subtractionCheckBox.isChecked());
-        editor.apply(); // Save changes
-    }
-
-    private Boolean checkValidCheckboxSelection() {
-        if ((!multiplicationCheckBox.isChecked()) && (!divisionCheckBox.isChecked())
-                && (!additionCheckBox.isChecked()) && (!subtractionCheckBox.isChecked())) {
-            Toast.makeText(this, "Must select minimum of 1 operator!", Toast.LENGTH_LONG).show();
-            return false; // No operators Selected
-        }
-        return true;
     }
 }
