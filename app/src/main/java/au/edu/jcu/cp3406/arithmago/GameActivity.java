@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -16,6 +17,8 @@ import java.util.Locale;
 
 import au.edu.jcu.cp3406.arithmago.database.ArithmaGoDatabaseAdapter;
 import au.edu.jcu.cp3406.arithmago.gamelogic.ArithmaGoGame;
+import au.edu.jcu.cp3406.arithmago.sound.AudioManager;
+import au.edu.jcu.cp3406.arithmago.sound.Sound;
 
 public class GameActivity extends AppCompatActivity {
     private Button answerButton01;
@@ -33,6 +36,7 @@ public class GameActivity extends AppCompatActivity {
     private ArithmaGoGame game;
     private int progress = 100;
     private final Handler handler = new Handler();
+    private AudioManager audioManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +47,7 @@ public class GameActivity extends AppCompatActivity {
         // Load SharedPreferences
         dataSource = getSharedPreferences("ArithmaGo_Variables", Context.MODE_PRIVATE);
         database = new ArithmaGoDatabaseAdapter(this);
+        audioManager = new AudioManager(this);
 
         answerButton01 = findViewById(R.id.answer1);
         answerButton02 = findViewById(R.id.answer2);
@@ -65,7 +70,6 @@ public class GameActivity extends AppCompatActivity {
                 }
             }
             addLeaderboardRecord();
-
             // Move to results activity with necessary variables
             Intent intent = new Intent(this, ResultsActivity.class);
             intent.putExtra("numberOfIncorrectAnswers", game.getNumberOfIncorrectAnswers());
@@ -83,11 +87,19 @@ public class GameActivity extends AppCompatActivity {
         database.insertData(username, score, level);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        audioManager.resume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        audioManager.pause();
+    }
+
     private void setupGame() {
-//        boolean isMultiplicationEnabled = dataSource.getBoolean("isMultiplicationEnabled", true);
-//        boolean isDivisionEnabled = dataSource.getBoolean("isDivisionEnabled", true);
-//        boolean isAdditionEnabled = dataSource.getBoolean("isAdditionEnabled", true);
-//        boolean isSubtractionEnabled = dataSource.getBoolean("isSubtractionEnabled", true);
         String level = dataSource.getString("level", "Medium");
         boolean isDifficultyLocked;
         if (level.equals("Dynamic")) {
@@ -146,12 +158,18 @@ public class GameActivity extends AppCompatActivity {
         boolean isCorrect = game.checkAnswer(selectedAnswer);
 
         if (isCorrect) {
+            if (audioManager.isReady()) {
+                audioManager.play(Sound.CORRECT);
+            }
             scoreDisplay.setText(String.format(locale, "%d", game.getScore()));
             progress += 2;
             if (progress > 100) {
                 progress = 100;
             }
         } else {
+            if (audioManager.isReady()) {
+                audioManager.play(Sound.INCORRECT);
+            }
             progress -= 10;
         }
         displayNextQuestion();
