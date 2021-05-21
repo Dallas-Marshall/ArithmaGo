@@ -14,10 +14,6 @@ public class ArithmaGoGameTest {
     public void testDefaultConstructor() {
         ArithmaGoGame game1 = new ArithmaGoGame();
 
-        assert game1.isMultiplicationEnabled();
-        assert game1.isAdditionEnabled();
-        assert game1.isDivisionEnabled();
-        assert game1.isSubtractionEnabled();
         assert game1.getScore() == 0;
 
         assert !game1.isDifficultyLocked();
@@ -30,23 +26,11 @@ public class ArithmaGoGameTest {
 
     @Test
     public void testSpecifiedConstructor() {
-        ArithmaGoGame game2 = new ArithmaGoGame("HARD", true,
-                true, false, true, false);
+        ArithmaGoGame game2 = new ArithmaGoGame("HARD", true);
 
-        assert game2.isMultiplicationEnabled();
-        assert !game2.isDivisionEnabled();
-        assert game2.isAdditionEnabled();
-        assert !game2.isSubtractionEnabled();
         assert game2.getScore() == 0;
 
         assert game2.isDifficultyLocked();
-
-        game2.addOperator("subtraction");
-        assert game2.isSubtractionEnabled();
-
-        game2.removeOperator("ADDITION");
-        assert !game2.isAdditionEnabled();
-
 
         assertEquals("HARD", game2.getCurrentGameLevel());
         assertEquals(0, game2.getNumberOfQuestionsAnswered());

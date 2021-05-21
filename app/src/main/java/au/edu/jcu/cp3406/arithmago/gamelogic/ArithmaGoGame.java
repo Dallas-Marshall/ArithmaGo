@@ -1,6 +1,5 @@
 package au.edu.jcu.cp3406.arithmago.gamelogic;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 public class ArithmaGoGame {
@@ -11,13 +10,7 @@ public class ArithmaGoGame {
 
     private String currentGameLevel;
     private final boolean isDifficultyLocked; // Whether to adjust level based on accuracy
-    private ArrayList<String> OPERATORS; // List of all possible Operators
     private String lastOperator;
-
-    private boolean isMultiplicationEnabled;
-    private boolean isDivisionEnabled;
-    private boolean isAdditionEnabled;
-    private boolean isSubtractionEnabled;
 
     private final Equation equation;
     private String eqn;
@@ -27,28 +20,17 @@ public class ArithmaGoGame {
     public ArithmaGoGame() {
         this.currentGameLevel = "MEDIUM";
         this.isDifficultyLocked = false;
-        this.isMultiplicationEnabled = true;
-        this.isDivisionEnabled = true;
-        this.isAdditionEnabled = true;
-        this.isSubtractionEnabled = true;
         this.score = 0;
 
         this.equation = new Equation(currentGameLevel);
-        setupOperators(); // List of all possible Operators
     }
 
-    public ArithmaGoGame(String specifiedLevel, boolean isDifficultyLocked, boolean isMultiplicationEnabled,
-                         boolean isDivisionEnabled, boolean isAdditionEnabled, boolean isSubtractionEnabled) {
+    public ArithmaGoGame(String specifiedLevel, boolean isDifficultyLocked) {
         this.currentGameLevel = specifiedLevel;
         this.isDifficultyLocked = isDifficultyLocked;
-        this.isMultiplicationEnabled = isMultiplicationEnabled;
-        this.isDivisionEnabled = isDivisionEnabled;
-        this.isAdditionEnabled = isAdditionEnabled;
-        this.isSubtractionEnabled = isSubtractionEnabled;
         this.score = 0;
 
         this.equation = new Equation(currentGameLevel);
-        setupOperators(); // List of all possible Operators
     }
 
     public String getLastOperator() {
@@ -69,22 +51,6 @@ public class ArithmaGoGame {
 
     public String getCurrentGameLevel() {
         return currentGameLevel;
-    }
-
-    public boolean isMultiplicationEnabled() {
-        return isMultiplicationEnabled;
-    }
-
-    public boolean isDivisionEnabled() {
-        return isDivisionEnabled;
-    }
-
-    public boolean isAdditionEnabled() {
-        return isAdditionEnabled;
-    }
-
-    public boolean isSubtractionEnabled() {
-        return isSubtractionEnabled;
     }
 
     public boolean isDifficultyLocked() {
@@ -112,32 +78,24 @@ public class ArithmaGoGame {
             try {
                 switch (randomNumber) {
                     case 0:
-                        if (isMultiplicationEnabled) {
-                            eqn = equation.generate("multiplication");
-                            possibleAnswers = equation.generateAnswers("multiplication", eqn);
-                            lastOperator = "multiplication";
-                        }
+                        eqn = equation.generate("multiplication");
+                        possibleAnswers = equation.generateAnswers("multiplication", eqn);
+                        lastOperator = "multiplication";
                         break;
                     case 1:
-                        if (isDivisionEnabled) {
-                            eqn = equation.generate("division");
-                            possibleAnswers = equation.generateAnswers("division", eqn);
-                            lastOperator = "division";
-                        }
+                        eqn = equation.generate("division");
+                        possibleAnswers = equation.generateAnswers("division", eqn);
+                        lastOperator = "division";
                         break;
                     case 2:
-                        if (isAdditionEnabled) {
-                            eqn = equation.generate("addition");
-                            possibleAnswers = equation.generateAnswers("addition", eqn);
-                            lastOperator = "addition";
-                        }
+                        eqn = equation.generate("addition");
+                        possibleAnswers = equation.generateAnswers("addition", eqn);
+                        lastOperator = "addition";
                         break;
                     default:
-                        if (isSubtractionEnabled) {
-                            eqn = equation.generate("subtraction");
-                            possibleAnswers = equation.generateAnswers("subtraction", eqn);
-                            lastOperator = "subtraction";
-                        }
+                        eqn = equation.generate("subtraction");
+                        possibleAnswers = equation.generateAnswers("subtraction", eqn);
+                        lastOperator = "subtraction";
                         break;
                 }
             } catch (Equation.InvalidOperatorException e) {
@@ -199,52 +157,6 @@ public class ArithmaGoGame {
                 currentGameLevel = "EXTREME";
             }
             equation.changeLevel(currentGameLevel);
-        }
-    }
-
-    private void setupOperators() {
-        OPERATORS = new ArrayList<>();
-        OPERATORS.add("multiplication");
-        OPERATORS.add("division");
-        OPERATORS.add("addition");
-        OPERATORS.add("subtraction");
-    }
-
-    public void addOperator(String newOperator) {
-        if (OPERATORS.contains(newOperator.toLowerCase())) { // Valid operator
-            switch (newOperator.toLowerCase()) {
-                case "multiplication":
-                    isMultiplicationEnabled = true;
-                    break;
-                case "division":
-                    isDivisionEnabled = true;
-                    break;
-                case "addition":
-                    isAdditionEnabled = true;
-                    break;
-                case "subtraction":
-                    isSubtractionEnabled = true;
-                    break;
-            }
-        }
-    }
-
-    public void removeOperator(String operatorToRemove) {
-        if (OPERATORS.contains(operatorToRemove.toLowerCase())) { // Valid operator
-            switch (operatorToRemove.toLowerCase()) {
-                case "multiplication":
-                    isMultiplicationEnabled = false;
-                    break;
-                case "division":
-                    isDivisionEnabled = false;
-                    break;
-                case "addition":
-                    isAdditionEnabled = false;
-                    break;
-                case "subtraction":
-                    isSubtractionEnabled = false;
-                    break;
-            }
         }
     }
 }

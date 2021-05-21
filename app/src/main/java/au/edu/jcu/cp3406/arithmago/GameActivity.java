@@ -83,10 +83,10 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void setupGame() {
-        boolean isMultiplicationEnabled = dataSource.getBoolean("isMultiplicationEnabled", true);
-        boolean isDivisionEnabled = dataSource.getBoolean("isDivisionEnabled", true);
-        boolean isAdditionEnabled = dataSource.getBoolean("isAdditionEnabled", true);
-        boolean isSubtractionEnabled = dataSource.getBoolean("isSubtractionEnabled", true);
+//        boolean isMultiplicationEnabled = dataSource.getBoolean("isMultiplicationEnabled", true);
+//        boolean isDivisionEnabled = dataSource.getBoolean("isDivisionEnabled", true);
+//        boolean isAdditionEnabled = dataSource.getBoolean("isAdditionEnabled", true);
+//        boolean isSubtractionEnabled = dataSource.getBoolean("isSubtractionEnabled", true);
         String level = dataSource.getString("level", "Medium");
         boolean isDifficultyLocked;
         if (level.equals("Dynamic")) {
@@ -95,9 +95,7 @@ public class GameActivity extends AppCompatActivity {
         } else {
             isDifficultyLocked = true;
         }
-
-        game = new ArithmaGoGame(level, isDifficultyLocked, isMultiplicationEnabled,
-                isDivisionEnabled, isAdditionEnabled, isSubtractionEnabled);
+        game = new ArithmaGoGame(level, isDifficultyLocked);
     }
 
     private void displayNextQuestion() {

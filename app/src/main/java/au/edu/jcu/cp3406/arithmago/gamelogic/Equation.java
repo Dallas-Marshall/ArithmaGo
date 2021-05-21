@@ -12,26 +12,31 @@ public class Equation {
     private Level levelSelected;
     private int min;
     private int max;
+    private ArrayList<String> OPERATORS; // List of supported operators
 
     public Equation() {
         levelSelected = new Level();
         min = levelSelected.getMin();
         max = levelSelected.getMax();
+        setupOperators();
     }
 
     public Equation(String specifiedLevel) {
         levelSelected = new Level(specifiedLevel);
         min = levelSelected.getMin();
         max = levelSelected.getMax();
+        setupOperators();
     }
 
-    public String generate(String operator) throws InvalidOperatorException {
-        ArrayList<String> OPERATORS = new ArrayList<>();
+    private void setupOperators() {
+        OPERATORS = new ArrayList<>();
         OPERATORS.add("multiplication");
         OPERATORS.add("division");
         OPERATORS.add("addition");
         OPERATORS.add("subtraction");
+    }
 
+    public String generate(String operator) throws InvalidOperatorException {
         try {
             int index = OPERATORS.indexOf(operator.toLowerCase());
             String operatorSymbol;
@@ -76,10 +81,7 @@ public class Equation {
     }
 
     public boolean checkAnswer(String operator, String equation, double guess) {
-        String regex = getRegex(operator);
-        String[] factors = equation.split(regex);
-        double answer = calculateAnswer(regex, factors);
-        return guess == answer;
+        return guess == getAnswer(operator, equation);
     }
 
     public double getAnswer(String operator, String equation) {
@@ -89,13 +91,13 @@ public class Equation {
     }
 
     public String[] generateAnswers(String operator, String equation) {
-        String[] possibleAnswers = new String[3];
         String regex = getRegex(operator);
         String[] factors = equation.split(regex);
         Random random = new Random();
         NumberFormat nf = new DecimalFormat("###.###");
 
-        double numberToDisplay;
+        String[] possibleAnswers = new String[3]; // 3 possible answers to equation
+        double numberToDisplay; // Generated number, before being formatted ready to display
         double answer = calculateAnswer(regex, factors);
         if ((answer < 3) && (answer > -3) && (operator.toLowerCase().equals("division"))) { // Answer is likely to be a decimal
             for (int i = 0; i < 2; ++i) {

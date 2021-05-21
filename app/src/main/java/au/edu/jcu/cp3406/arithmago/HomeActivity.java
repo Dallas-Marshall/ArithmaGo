@@ -10,10 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class HomeActivity extends AppCompatActivity {
-    // Intent Variables
-    public static final int SETTINGS_REQUEST = 1;
-    public static final int GAME_REQUEST = 2;
-
     // App Variables
     private SharedPreferences dataSource;
 
@@ -27,10 +23,6 @@ public class HomeActivity extends AppCompatActivity {
             // Set defaults
             SharedPreferences.Editor editor = dataSource.edit();
             editor.putString("level", "Dynamic");
-            editor.putBoolean("isMultiplicationEnabled", true);
-            editor.putBoolean("isDivisionEnabled", true);
-            editor.putBoolean("isAdditionEnabled", true);
-            editor.putBoolean("isSubtractionEnabled", true);
             editor.putString("username", "Guest");
             editor.apply(); // Save changes
         }
@@ -38,10 +30,6 @@ public class HomeActivity extends AppCompatActivity {
             // Load saved variables
             SharedPreferences.Editor editor = dataSource.edit();
             editor.putString("level", savedInstanceState.getString("level"));
-            editor.putBoolean("isMultiplicationEnabled", savedInstanceState.getBoolean("isMultiplicationEnabled"));
-            editor.putBoolean("isDivisionEnabled", savedInstanceState.getBoolean("isDivisionEnabled"));
-            editor.putBoolean("isAdditionEnabled", savedInstanceState.getBoolean("isAdditionEnabled"));
-            editor.putBoolean("isSubtractionEnabled", savedInstanceState.getBoolean("isSubtractionEnabled"));
             editor.putString("username", savedInstanceState.getString("username"));
             editor.apply(); // Save changes
         }
@@ -62,17 +50,13 @@ public class HomeActivity extends AppCompatActivity {
     public void playSelected(View view) {
         // Start gameActivity
         Intent intent = new Intent(this, GameActivity.class);
-        startActivityForResult(intent, GAME_REQUEST);
+        startActivity(intent);
     }
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString("level", dataSource.getString("level", "Medium"));
-        outState.putBoolean("isMultiplicationEnabled", dataSource.getBoolean("isMultiplicationEnabled", true));
-        outState.putBoolean("isDivisionEnabled", dataSource.getBoolean("isDivisionEnabled", true));
-        outState.putBoolean("isAdditionEnabled", dataSource.getBoolean("isAdditionEnabled", true));
-        outState.putBoolean("isSubtractionEnabled", dataSource.getBoolean("isSubtractionEnabled", true));
         outState.putString("username", dataSource.getString("username", "Guest"));
     }
 }
