@@ -17,6 +17,10 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.Random;
 
+import au.edu.jcu.cp3406.arithmago.database.ArithmaGoDatabaseAdapter;
+import au.edu.jcu.cp3406.arithmago.database.Leaderboard;
+import au.edu.jcu.cp3406.arithmago.database.Record;
+
 public class LeaderboardActivity extends AppCompatActivity {
     private Random random;
     private Locale locale;

@@ -17,6 +17,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 
+import au.edu.jcu.cp3406.arithmago.levelSpinner.LevelAdapter;
+import au.edu.jcu.cp3406.arithmago.levelSpinner.LevelItem;
+
 public class SettingsActivity extends AppCompatActivity {
     private ArrayList<LevelItem> levelList;
     private LevelAdapter levelAdapter;

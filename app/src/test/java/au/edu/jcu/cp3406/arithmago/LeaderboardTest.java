@@ -2,8 +2,8 @@ package au.edu.jcu.cp3406.arithmago;
 
 import org.junit.Test;
 
-import au.edu.jcu.cp3406.arithmago.gamelogic.ArithmaGoGame;
-import au.edu.jcu.cp3406.arithmago.gamelogic.Equation;
+import au.edu.jcu.cp3406.arithmago.database.Leaderboard;
+import au.edu.jcu.cp3406.arithmago.database.Record;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

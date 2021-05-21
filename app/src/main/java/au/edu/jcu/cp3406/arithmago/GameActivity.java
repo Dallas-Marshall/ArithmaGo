@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Locale;
 
+import au.edu.jcu.cp3406.arithmago.database.ArithmaGoDatabaseAdapter;
 import au.edu.jcu.cp3406.arithmago.gamelogic.ArithmaGoGame;
 
 public class GameActivity extends AppCompatActivity {
