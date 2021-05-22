@@ -3,17 +3,22 @@ package au.edu.jcu.cp3406.arithmago;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Locale;
+import java.util.Objects;
 
 import au.edu.jcu.cp3406.arithmago.database.ArithmaGoDatabaseAdapter;
 import au.edu.jcu.cp3406.arithmago.gamelogic.ArithmaGoGame;
@@ -37,6 +42,13 @@ public class GameActivity extends AppCompatActivity {
     private int progress = 100;
     private final Handler handler = new Handler();
     private AudioManager audioManager;
+
+    public static final int SHAKE_THRESHOLD = 15;
+    private boolean isSkipUsed;
+    private SensorManager sensorManager;
+    private float acceleration;
+    private float currentAcceleration;
+    private float lastAcceleration;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +90,14 @@ public class GameActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }).start();
+
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        Objects.requireNonNull(sensorManager).registerListener(shakeEventListener, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                SensorManager.SENSOR_DELAY_NORMAL);
+        acceleration = 10f;
+        currentAcceleration = SensorManager.GRAVITY_EARTH;
+        lastAcceleration = SensorManager.GRAVITY_EARTH;
+        isSkipUsed = false;
     }
 
     public void addLeaderboardRecord() {
@@ -91,12 +111,43 @@ public class GameActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         audioManager.resume();
+        sensorManager.registerListener(shakeEventListener, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                SensorManager.SENSOR_DELAY_NORMAL);
     }
+
+    private final SensorEventListener shakeEventListener = new SensorEventListener() {
+        @Override
+        public void onSensorChanged(SensorEvent event) {
+            float x = event.values[0];
+            float y = event.values[1];
+            float z = event.values[2];
+
+            lastAcceleration = currentAcceleration;
+            currentAcceleration = (float) Math.sqrt((x * x + y * y + z * z));
+
+            float delta = currentAcceleration - lastAcceleration;
+            acceleration = (float) (acceleration * 0.9 + delta);
+            if (acceleration > SHAKE_THRESHOLD) {
+                if (!isSkipUsed) {
+                    displayNextQuestion();
+                    isSkipUsed = true;
+                    Toast.makeText(getApplicationContext(), "Skipped", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "No skips remaining.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int accuracy) {
+        }
+    };
 
     @Override
     protected void onPause() {
         super.onPause();
         audioManager.pause();
+        sensorManager.unregisterListener(shakeEventListener);
     }
 
     private void setupGame() {
