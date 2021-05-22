@@ -28,7 +28,7 @@ public class ArithmaGoDatabaseAdapter {
         String[] columns = {myDbHelper.RECORD_ID, myDbHelper.USERNAME, myDbHelper.SCORE, myDbHelper.LEVEL};
         String[] levelToSortBy = {selectedLevel};
         Cursor cursor = database.query(myDbHelper.TABLE_NAME, columns, myDbHelper.LEVEL + " =?", levelToSortBy, null, null, myDbHelper.SCORE + " DESC ," + myDbHelper.USERNAME);
-        StringBuilder stringBuilder = new StringBuilder();
+
         Leaderboard leaderboard = new Leaderboard();
         while (cursor.moveToNext()) {
             String username = cursor.getString(cursor.getColumnIndex(myDbHelper.USERNAME));
@@ -42,7 +42,7 @@ public class ArithmaGoDatabaseAdapter {
     }
 
     static class myDbHelper extends SQLiteOpenHelper {
-        private static final String DATABASE_NAME = "arithmago_test_01";
+        private static final String DATABASE_NAME = "arithmago_db";
         private static final String TABLE_NAME = "SCORES";
         private static final int DATABASE_Version = 1;
         private static final String RECORD_ID = "_id";
